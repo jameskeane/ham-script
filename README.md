@@ -1,2 +1,4 @@
-canopy-json -- a JSON parse demonstrating Canopy
-================================================
+Harp -- an altJS language
+=========================
+
+comming soon.
