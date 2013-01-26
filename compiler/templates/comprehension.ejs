@@ -1,0 +1,12 @@
+(function() {
+  var tmp = [];
+  var evaluator = function(<%= params.join(', ') %>) {
+    return <%= body %>;
+  };
+
+  for(var i = 0; i < Math.min(<%= providers.join('.length, ') + '.length' %>); i++) {
+    tmp.push(evaluator(<%= providers.join('[i], ') + '[i]' %>));
+  }
+
+  return tmp;
+})()

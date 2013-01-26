@@ -1,0 +1,42 @@
+grammar harp
+  root      <- _ (_ statement _)* <HarpFile>
+  block     <- ("{" _ expr _ "}" / "{" _ (_ statement _)* "}") <Block> 
+
+  statement <- variable / class_def / import / return / exprstmt
+  exprstmt  <- expr _ ";" <ExprStmt>
+
+  import    <- "import" _ ident (_ "," _ ident)* _ "from" _ string _ ";" <Import>
+  class_def <- "class" _ ident _ ("extends" _ ident _)? object _ ";" <ClassDef>
+  variable  <- "var" _ ident (":" _ type)? (_ "=" _ expr)? _ ";" <VariableDef>
+  return    <- "return" _ expr _ ";" <ReturnStmt>
+
+  expr      <- value ( _ [-+=*] _ value )? <Expression>
+  expr_list <- expr ( _ "," _ expr)* <ExprList>
+  value     <- string / number / object / listcomp / array_rng / array 
+             / lambda / special / funcall / arrayslc / arrayacs / proto
+
+  array     <- "[" _ expr_list? _ "]" <ArrayNode>
+  array_rng <- "[" _ start:(integer / ident) ".." end:(integer / ident) _ "]" <ArrayRange>
+
+  object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
+  object_p  <- _ name:(string / ident_p) _ ":" _ expr _
+  lambda    <- "|" _ (ident_p (_ "," _ ident_p)* )? _ "|" _ block <Lambda>
+  listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ proto) (_ "," _ (ident_p _ "<-" _ proto))* _ "]" <ListComprehension>
+  funcall   <- proto _ "(" _ expr_list? _ ")" <FunctionInvocation>
+
+  arrayacs  <- proto _ "[" _ (string / number) _ "]" _ <ArrayAccess>
+  arrayslc  <- proto _ "[" _ slice _ "]" _ <ArraySlice>
+  slice     <- start:integer? ":" end:integer? step:(":" integer)?
+
+  type      <- "string" / "number" / ident  <Type>
+  string    <- "\"" ( [^"\\] / ("\\" ["bfnrt\\/]) / hex )* "\"" <StringNode>
+  number    <- "-"? ( ("0" / [1-9] [0-9]*) ("." [0-9]+)? ( ("e" / "E") ("+" / "-")? [0-9]+ )? ) <NumberNode>
+  integer   <- "-"? [1-9] [0-9]*
+
+  proto     <- ident ("::" ident_p)? <PrototypeExpander>
+  ident     <- ident_p ("." ident_p)* <Identifier>
+  ident_p   <- [$_a-zA-Z] [$_a-zA-Z0-9]* 
+  special   <- "true" / "false" / "null <SpecialNode>"
+  hex       <- "\\u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
+
+  _         <- (("//" [^\n]* [\n]) / [ \n\t])*

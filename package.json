@@ -1,0 +1,28 @@
+{
+  "name": "canopy-json",
+  "version": "1.0.0",
+  "description": "A simple JSON parse demonstrating the Canopy PEG Generator",
+  "main": "json.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jameskeane/canopy-json.git"
+  },
+  "keywords": [
+    "canopy",
+    "peg",
+    "json",
+    "parser",
+    "window.JSON"
+  ],
+  "author": "James Keane",
+  "license": "BSD",
+  "devDependencies": {
+    "canopy": "0.2.0"
+  },
+  "dependencies": {
+    "underscore": "~1.4.3"
+  }
+}

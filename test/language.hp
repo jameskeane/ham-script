@@ -1,0 +1,47 @@
+// q.parse('q; 1;').elements[1].elements[0].statement.expr
+
+import Backbone, _ from "vendor/backbone";
+
+var x:number = 3;
+var c:number;
+
+var y = [1, 2, 3];
+console.log(y);
+
+var q = x + y;
+
+var sum = |x, y| {
+  var q = y - x;
+  q + 1;
+  return x + q;
+};
+
+sum(1, 2, 59 + q);
+
+var obj = {
+  "k": 1, "p": 3
+};
+
+var Backbone = {
+  Model: {}
+};
+
+// OOP style classes
+class Hamburger extends Backbone.Model {
+  add: |x, y| { x + y },
+  subtract: |x, y| { x - y}
+};
+
+// yet still prototypical, i.e. modifying prototype
+String::startsWith = |x| { 2 };
+
+// if you have a lambda with a single expression as it's body it will be
+// converted into a return statement.
+
+// list comprehensions
+var square = [x*z | x <- y, z <- q];
+
+// functional programming
+//[1, 2, 3].map(|x| { x*2 });
+//[2, 3, 4].filter(|x| { x % 2 });
+//[1, 2, 3].reduce(|x, r| { r += x });

@@ -1,0 +1,18 @@
+// supports ranges
+var start = 0;
+var end = 20;
+var range = [1..50];
+var dynamic_range = [start..end];
+
+// list comprehensions
+var squares = [x*x | x <- range];
+
+// TODO: range[1::][0], arrayacs on values instead of protos;
+
+// python style slices
+squares[1:];
+squares[:5];
+
+// steps
+range[::2];
+
