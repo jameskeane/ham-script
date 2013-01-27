@@ -58,7 +58,7 @@ lang.Parser.IfStmt = ASTNode.extend({
       elifs.push([el.expr.toJS(state), el.block.toJS(state)]);
     });
 
-    var elsestate = this.elements[10].block.toJS(state);
+    var elsestate = this.elements[10].block ? this.elements[10].block.toJS(state) : '';
 
     return {
       cond: condition,

@@ -2302,70 +2302,78 @@
         text0 += address1.textValue;
         labelled0.value_acs = address1;
         var address2 = null;
-        var index2 = this._offset;
-        var index3 = this._offset, elements1 = [], labelled1 = {}, text1 = "";
-        var address3 = null;
-        address3 = this.__consume___();
-        if (address3) {
-          elements1.push(address3);
-          text1 += address3.textValue;
-          labelled1._ = address3;
+        var remaining0 = 0, index2 = this._offset, elements1 = [], text1 = "", address3 = true;
+        while (address3) {
+          var index3 = this._offset, elements2 = [], labelled1 = {}, text2 = "";
           var address4 = null;
-          address4 = this.__consume__binaryop();
+          address4 = this.__consume___();
           if (address4) {
-            elements1.push(address4);
-            text1 += address4.textValue;
-            labelled1.binaryop = address4;
+            elements2.push(address4);
+            text2 += address4.textValue;
+            labelled1._ = address4;
             var address5 = null;
-            address5 = this.__consume___();
+            address5 = this.__consume__binaryop();
             if (address5) {
-              elements1.push(address5);
-              text1 += address5.textValue;
-              labelled1._ = address5;
+              elements2.push(address5);
+              text2 += address5.textValue;
+              labelled1.binaryop = address5;
               var address6 = null;
-              address6 = this.__consume__value_acs();
+              address6 = this.__consume___();
               if (address6) {
-                elements1.push(address6);
-                text1 += address6.textValue;
-                labelled1.value_acs = address6;
+                elements2.push(address6);
+                text2 += address6.textValue;
+                labelled1._ = address6;
+                var address7 = null;
+                address7 = this.__consume__value_acs();
+                if (address7) {
+                  elements2.push(address7);
+                  text2 += address7.textValue;
+                  labelled1.value_acs = address7;
+                } else {
+                  elements2 = null;
+                  this._offset = index3;
+                }
               } else {
-                elements1 = null;
+                elements2 = null;
                 this._offset = index3;
               }
             } else {
-              elements1 = null;
+              elements2 = null;
               this._offset = index3;
             }
           } else {
-            elements1 = null;
+            elements2 = null;
             this._offset = index3;
           }
-        } else {
-          elements1 = null;
-          this._offset = index3;
+          if (elements2) {
+            this._offset = index3;
+            var klass0 = this.constructor.SyntaxNode;
+            var type0 = null;
+            address3 = new klass0(text2, this._offset, elements2, labelled1);
+            if (typeof type0 === "object") {
+              extend(address3, type0);
+            }
+            this._offset += text2.length;
+          } else {
+            address3 = null;
+          }
+          if (address3) {
+            elements1.push(address3);
+            text1 += address3.textValue;
+            remaining0 -= 1;
+          }
         }
-        if (elements1) {
-          this._offset = index3;
-          var klass0 = this.constructor.SyntaxNode;
-          var type0 = null;
-          address2 = new klass0(text1, this._offset, elements1, labelled1);
-          if (typeof type0 === "object") {
-            extend(address2, type0);
+        if (remaining0 <= 0) {
+          this._offset = index2;
+          var klass1 = this.constructor.SyntaxNode;
+          var type1 = null;
+          address2 = new klass1(text1, this._offset, elements1);
+          if (typeof type1 === "object") {
+            extend(address2, type1);
           }
           this._offset += text1.length;
         } else {
           address2 = null;
-        }
-        if (address2) {
-        } else {
-          this._offset = index2;
-          var klass1 = this.constructor.SyntaxNode;
-          var type1 = null;
-          address2 = new klass1("", this._offset, []);
-          if (typeof type1 === "object") {
-            extend(address2, type1);
-          }
-          this._offset += 0;
         }
         if (address2) {
           elements0.push(address2);

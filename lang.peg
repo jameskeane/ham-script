@@ -14,7 +14,7 @@ grammar harp
                (_ "else" _ "if" _ "(" _ expr _ ")" _ block)*
                (_ "else" _ block)? _ ";"? <IfStmt>
 
-  expr      <- value_acs ( _ binaryop _ value_acs )? <Expression>
+  expr      <- value_acs ( _ binaryop _ value_acs )* <Expression>
   binaryop  <- "or" / "+=" / "is" / "==" / "!=" / [-+=*]
 
   value_acs <- value ( (_ "." _ value) / (_ accessor) )* <ValueAccessor>
