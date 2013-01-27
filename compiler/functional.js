@@ -52,7 +52,7 @@ module.exports.Lambda = ASTNode.extend({
 
 module.exports.FunctionInvocation = ASTNode.extend({
   serialize: function(state) {
-    var name = this.proto.toJS();
+    var name = this.callable.toJS();
     if(this.elements[4].textValue === '')
       return name + "();";
 

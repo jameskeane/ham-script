@@ -115,6 +115,13 @@ lang.Parser.ExprList = {
   }
 }
 
+lang.Parser.IdentiferChain = {
+  toJS: function(state) {
+    // TODO
+    return this.textValue;
+  }
+}
+
 lang.Parser.Identifier = {
   val: function() {
 
