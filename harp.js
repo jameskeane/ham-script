@@ -25,7 +25,7 @@ lang.Parser.HarpFile = ASTNode.extend({
   }
 });
 
-lang.Parser.Block = {
+lang.Parser.FunctionalBlock = {
   serialize: function(state) {
     var stmts = [];
 
@@ -36,6 +36,46 @@ lang.Parser.Block = {
         stmts.push(el.statement.toJS(state));
       });
     }
+
+    return stmts;
+  },
+
+  toJS: function(state, indent) {
+    return this.serialize().join('\n');
+  }
+}
+
+lang.Parser.IfStmt = ASTNode.extend({
+  template: 'if_stmt',
+
+  serialize: function(state) {
+    var condition = this.expr.toJS(state);
+    var main_block = this.block.toJS(state);
+    var elifs = [];
+
+    // generate the elifs
+    this.elements[9].elements.forEach(function(el) {
+      elifs.push([el.expr.toJS(state), el.block.toJS(state)]);
+    });
+
+    var elsestate = this.elements[10].block.toJS(state);
+
+    return {
+      cond: condition,
+      main_block: main_block,
+      elifs: elifs,
+      elsestate: elsestate
+    };
+  }
+});
+
+lang.Parser.Block = {
+  serialize: function(state) {
+    var stmts = [];
+
+    this.elements[2].elements.forEach(function(el) {
+      stmts.push(el.statement.toJS(state));
+    });
 
     return stmts;
   },
@@ -108,7 +148,6 @@ lang.Parser.ReturnStmt = {
 
 lang.Parser.Expression = {
   toJS: function(state, indent) {
-    //console.log(this.value);
     var ret = this.value.toJS(state, indent+1);
 
     if(this.elements[1].value) {
@@ -130,7 +169,8 @@ lang.Parser.VariableDef = {
   toJS: function(state, indent) {
     var ident = this.ident.toJS(state, indent+1);
     var has_type = this.elements[3].type !== undefined;
-    var value = this.elements[4].expr ? this.elements[4].expr.value.toJS(state, indent+1) : "null";
+
+    var value = this.elements[4].expr ? this.elements[4].expr.toJS(state, indent+1) : "null";
     return "var " + ident + " = " + value + ";";
   }
 }

@@ -15,4 +15,14 @@ squares[:5];
 
 // steps
 range[::2];
+var x = false;
 
+if(x) {
+
+} else if(y) {
+} else if(y) {
+} else if(y) {
+  
+} else {
+  
+}

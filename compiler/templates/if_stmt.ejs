@@ -1,0 +1,11 @@
+if(<%= cond %>) {
+  <%= main_block %>
+<% elifs.forEach(function(elif) { %>
+} else if(<%= elif[0] %>) {
+  <%= elif[1] %>
+<% }); %>
+<% if(elsestate !== '') { %>
+} else {
+  <%= elsestate %>
+<% } %>
+}

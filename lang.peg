@@ -1,14 +1,19 @@
 grammar harp
   root      <- _ (_ statement _)* <HarpFile>
-  block     <- ("{" _ expr _ "}" / "{" _ (_ statement _)* "}") <Block> 
+  funblock  <- ("{" _ expr _ "}" / "{" _ (_ statement _)* "}") <FunctionalBlock> 
+  block     <- "{" _ (_ statement _)* "}" <Block> 
 
-  statement <- variable / class_def / import / return / exprstmt
+  statement <- variable / class_def / import / return / if_stmt / exprstmt
   exprstmt  <- expr _ ";" <ExprStmt>
 
   import    <- "import" _ ident (_ "," _ ident)* _ "from" _ string _ ";" <Import>
   class_def <- "class" _ ident _ ("extends" _ ident _)? object _ ";" <ClassDef>
   variable  <- "var" _ ident (":" _ type)? (_ "=" _ expr)? _ ";" <VariableDef>
   return    <- "return" _ expr _ ";" <ReturnStmt>
+
+  if_stmt   <- "if" _ "(" _ expr _ ")" _ block
+               (_ "else" _ "if" _ "(" _ expr _ ")" _ block)*
+               (_ "else" _ block)? _ ";"? <IfStmt>
 
   expr      <- value ( _ [-+=*] _ value )? <Expression>
   expr_list <- expr ( _ "," _ expr)* <ExprList>
@@ -20,7 +25,7 @@ grammar harp
 
   object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
   object_p  <- _ name:(string / ident_p) _ ":" _ expr _
-  lambda    <- "|" _ (ident_p (_ "," _ ident_p)* )? _ "|" _ block <Lambda>
+  lambda    <- "|" _ (ident_p (_ "," _ ident_p)* )? _ "|" _ funblock <Lambda>
   listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ proto) (_ "," _ (ident_p _ "<-" _ proto))* _ "]" <ListComprehension>
   funcall   <- proto _ "(" _ expr_list? _ ")" <FunctionInvocation>
 
@@ -36,7 +41,7 @@ grammar harp
   proto     <- ident ("::" ident_p)? <PrototypeExpander>
   ident     <- ident_p ("." ident_p)* <Identifier>
   ident_p   <- [$_a-zA-Z] [$_a-zA-Z0-9]* 
-  special   <- "true" / "false" / "null <SpecialNode>"
+  special   <- ("true" / "false" / "null") <SpecialNode>
   hex       <- "\\u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
 
   _         <- (("//" [^\n]* [\n]) / [ \n\t])*

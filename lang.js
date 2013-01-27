@@ -147,10 +147,10 @@
       }
       return this._nodeCache["root"][index0] = address0;
     },
-    __consume__block: function(input) {
+    __consume__funblock: function(input) {
       var address0 = null, index0 = this._offset;
-      this._nodeCache["block"] = this._nodeCache["block"] || {};
-      var cached = this._nodeCache["block"][index0];
+      this._nodeCache["funblock"] = this._nodeCache["funblock"] || {};
+      var cached = this._nodeCache["funblock"][index0];
       if (cached) {
         this._offset += cached.textValue.length;
         return cached;
@@ -268,7 +268,7 @@
         address0 = null;
       }
       if (address0) {
-        var type3 = find(this.constructor, "Block");
+        var type3 = find(this.constructor, "FunctionalBlock");
         if (typeof type3 === "object") {
           extend(address0, type3);
         }
@@ -437,13 +437,185 @@
           address0 = null;
         }
         if (address0) {
-          var type9 = find(this.constructor, "Block");
+          var type9 = find(this.constructor, "FunctionalBlock");
           if (typeof type9 === "object") {
             extend(address0, type9);
           }
         } else {
           this._offset = index1;
         }
+      }
+      return this._nodeCache["funblock"][index0] = address0;
+    },
+    __consume__block: function(input) {
+      var address0 = null, index0 = this._offset;
+      this._nodeCache["block"] = this._nodeCache["block"] || {};
+      var cached = this._nodeCache["block"][index0];
+      if (cached) {
+        this._offset += cached.textValue.length;
+        return cached;
+      }
+      var index1 = this._offset, elements0 = [], labelled0 = {}, text0 = "";
+      var address1 = null;
+      var slice0 = null;
+      if (this._input.length > this._offset) {
+        slice0 = this._input.substring(this._offset, this._offset + 1);
+      } else {
+        slice0 = null;
+      }
+      if (slice0 === "{") {
+        var klass0 = this.constructor.SyntaxNode;
+        var type0 = null;
+        address1 = new klass0("{", this._offset, []);
+        if (typeof type0 === "object") {
+          extend(address1, type0);
+        }
+        this._offset += 1;
+      } else {
+        address1 = null;
+        var slice1 = null;
+        if (this._input.length > this._offset) {
+          slice1 = this._input.substring(this._offset, this._offset + 1);
+        } else {
+          slice1 = null;
+        }
+        if (!this.error || this.error.offset <= this._offset) {
+          this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"{\""};
+        }
+      }
+      if (address1) {
+        elements0.push(address1);
+        text0 += address1.textValue;
+        var address2 = null;
+        address2 = this.__consume___();
+        if (address2) {
+          elements0.push(address2);
+          text0 += address2.textValue;
+          labelled0._ = address2;
+          var address3 = null;
+          var remaining0 = 0, index2 = this._offset, elements1 = [], text1 = "", address4 = true;
+          while (address4) {
+            var index3 = this._offset, elements2 = [], labelled1 = {}, text2 = "";
+            var address5 = null;
+            address5 = this.__consume___();
+            if (address5) {
+              elements2.push(address5);
+              text2 += address5.textValue;
+              labelled1._ = address5;
+              var address6 = null;
+              address6 = this.__consume__statement();
+              if (address6) {
+                elements2.push(address6);
+                text2 += address6.textValue;
+                labelled1.statement = address6;
+                var address7 = null;
+                address7 = this.__consume___();
+                if (address7) {
+                  elements2.push(address7);
+                  text2 += address7.textValue;
+                  labelled1._ = address7;
+                } else {
+                  elements2 = null;
+                  this._offset = index3;
+                }
+              } else {
+                elements2 = null;
+                this._offset = index3;
+              }
+            } else {
+              elements2 = null;
+              this._offset = index3;
+            }
+            if (elements2) {
+              this._offset = index3;
+              var klass1 = this.constructor.SyntaxNode;
+              var type1 = null;
+              address4 = new klass1(text2, this._offset, elements2, labelled1);
+              if (typeof type1 === "object") {
+                extend(address4, type1);
+              }
+              this._offset += text2.length;
+            } else {
+              address4 = null;
+            }
+            if (address4) {
+              elements1.push(address4);
+              text1 += address4.textValue;
+              remaining0 -= 1;
+            }
+          }
+          if (remaining0 <= 0) {
+            this._offset = index2;
+            var klass2 = this.constructor.SyntaxNode;
+            var type2 = null;
+            address3 = new klass2(text1, this._offset, elements1);
+            if (typeof type2 === "object") {
+              extend(address3, type2);
+            }
+            this._offset += text1.length;
+          } else {
+            address3 = null;
+          }
+          if (address3) {
+            elements0.push(address3);
+            text0 += address3.textValue;
+            var address8 = null;
+            var slice2 = null;
+            if (this._input.length > this._offset) {
+              slice2 = this._input.substring(this._offset, this._offset + 1);
+            } else {
+              slice2 = null;
+            }
+            if (slice2 === "}") {
+              var klass3 = this.constructor.SyntaxNode;
+              var type3 = null;
+              address8 = new klass3("}", this._offset, []);
+              if (typeof type3 === "object") {
+                extend(address8, type3);
+              }
+              this._offset += 1;
+            } else {
+              address8 = null;
+              var slice3 = null;
+              if (this._input.length > this._offset) {
+                slice3 = this._input.substring(this._offset, this._offset + 1);
+              } else {
+                slice3 = null;
+              }
+              if (!this.error || this.error.offset <= this._offset) {
+                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"}\""};
+              }
+            }
+            if (address8) {
+              elements0.push(address8);
+              text0 += address8.textValue;
+            } else {
+              elements0 = null;
+              this._offset = index1;
+            }
+          } else {
+            elements0 = null;
+            this._offset = index1;
+          }
+        } else {
+          elements0 = null;
+          this._offset = index1;
+        }
+      } else {
+        elements0 = null;
+        this._offset = index1;
+      }
+      if (elements0) {
+        this._offset = index1;
+        var klass4 = this.constructor.SyntaxNode;
+        var type4 = find(this.constructor, "Block");
+        address0 = new klass4(text0, this._offset, elements0, labelled0);
+        if (typeof type4 === "object") {
+          extend(address0, type4);
+        }
+        this._offset += text0.length;
+      } else {
+        address0 = null;
       }
       return this._nodeCache["block"][index0] = address0;
     },
@@ -472,10 +644,15 @@
             if (address0) {
             } else {
               this._offset = index1;
-              address0 = this.__consume__exprstmt();
+              address0 = this.__consume__if_stmt();
               if (address0) {
               } else {
                 this._offset = index1;
+                address0 = this.__consume__exprstmt();
+                if (address0) {
+                } else {
+                  this._offset = index1;
+                }
               }
             }
           }
@@ -1513,6 +1690,601 @@
         address0 = null;
       }
       return this._nodeCache["return"][index0] = address0;
+    },
+    __consume__if_stmt: function(input) {
+      var address0 = null, index0 = this._offset;
+      this._nodeCache["if_stmt"] = this._nodeCache["if_stmt"] || {};
+      var cached = this._nodeCache["if_stmt"][index0];
+      if (cached) {
+        this._offset += cached.textValue.length;
+        return cached;
+      }
+      var index1 = this._offset, elements0 = [], labelled0 = {}, text0 = "";
+      var address1 = null;
+      var slice0 = null;
+      if (this._input.length > this._offset) {
+        slice0 = this._input.substring(this._offset, this._offset + 2);
+      } else {
+        slice0 = null;
+      }
+      if (slice0 === "if") {
+        var klass0 = this.constructor.SyntaxNode;
+        var type0 = null;
+        address1 = new klass0("if", this._offset, []);
+        if (typeof type0 === "object") {
+          extend(address1, type0);
+        }
+        this._offset += 2;
+      } else {
+        address1 = null;
+        var slice1 = null;
+        if (this._input.length > this._offset) {
+          slice1 = this._input.substring(this._offset, this._offset + 1);
+        } else {
+          slice1 = null;
+        }
+        if (!this.error || this.error.offset <= this._offset) {
+          this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"if\""};
+        }
+      }
+      if (address1) {
+        elements0.push(address1);
+        text0 += address1.textValue;
+        var address2 = null;
+        address2 = this.__consume___();
+        if (address2) {
+          elements0.push(address2);
+          text0 += address2.textValue;
+          labelled0._ = address2;
+          var address3 = null;
+          var slice2 = null;
+          if (this._input.length > this._offset) {
+            slice2 = this._input.substring(this._offset, this._offset + 1);
+          } else {
+            slice2 = null;
+          }
+          if (slice2 === "(") {
+            var klass1 = this.constructor.SyntaxNode;
+            var type1 = null;
+            address3 = new klass1("(", this._offset, []);
+            if (typeof type1 === "object") {
+              extend(address3, type1);
+            }
+            this._offset += 1;
+          } else {
+            address3 = null;
+            var slice3 = null;
+            if (this._input.length > this._offset) {
+              slice3 = this._input.substring(this._offset, this._offset + 1);
+            } else {
+              slice3 = null;
+            }
+            if (!this.error || this.error.offset <= this._offset) {
+              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"(\""};
+            }
+          }
+          if (address3) {
+            elements0.push(address3);
+            text0 += address3.textValue;
+            var address4 = null;
+            address4 = this.__consume___();
+            if (address4) {
+              elements0.push(address4);
+              text0 += address4.textValue;
+              labelled0._ = address4;
+              var address5 = null;
+              address5 = this.__consume__expr();
+              if (address5) {
+                elements0.push(address5);
+                text0 += address5.textValue;
+                labelled0.expr = address5;
+                var address6 = null;
+                address6 = this.__consume___();
+                if (address6) {
+                  elements0.push(address6);
+                  text0 += address6.textValue;
+                  labelled0._ = address6;
+                  var address7 = null;
+                  var slice4 = null;
+                  if (this._input.length > this._offset) {
+                    slice4 = this._input.substring(this._offset, this._offset + 1);
+                  } else {
+                    slice4 = null;
+                  }
+                  if (slice4 === ")") {
+                    var klass2 = this.constructor.SyntaxNode;
+                    var type2 = null;
+                    address7 = new klass2(")", this._offset, []);
+                    if (typeof type2 === "object") {
+                      extend(address7, type2);
+                    }
+                    this._offset += 1;
+                  } else {
+                    address7 = null;
+                    var slice5 = null;
+                    if (this._input.length > this._offset) {
+                      slice5 = this._input.substring(this._offset, this._offset + 1);
+                    } else {
+                      slice5 = null;
+                    }
+                    if (!this.error || this.error.offset <= this._offset) {
+                      this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\")\""};
+                    }
+                  }
+                  if (address7) {
+                    elements0.push(address7);
+                    text0 += address7.textValue;
+                    var address8 = null;
+                    address8 = this.__consume___();
+                    if (address8) {
+                      elements0.push(address8);
+                      text0 += address8.textValue;
+                      labelled0._ = address8;
+                      var address9 = null;
+                      address9 = this.__consume__block();
+                      if (address9) {
+                        elements0.push(address9);
+                        text0 += address9.textValue;
+                        labelled0.block = address9;
+                        var address10 = null;
+                        var remaining0 = 0, index2 = this._offset, elements1 = [], text1 = "", address11 = true;
+                        while (address11) {
+                          var index3 = this._offset, elements2 = [], labelled1 = {}, text2 = "";
+                          var address12 = null;
+                          address12 = this.__consume___();
+                          if (address12) {
+                            elements2.push(address12);
+                            text2 += address12.textValue;
+                            labelled1._ = address12;
+                            var address13 = null;
+                            var slice6 = null;
+                            if (this._input.length > this._offset) {
+                              slice6 = this._input.substring(this._offset, this._offset + 4);
+                            } else {
+                              slice6 = null;
+                            }
+                            if (slice6 === "else") {
+                              var klass3 = this.constructor.SyntaxNode;
+                              var type3 = null;
+                              address13 = new klass3("else", this._offset, []);
+                              if (typeof type3 === "object") {
+                                extend(address13, type3);
+                              }
+                              this._offset += 4;
+                            } else {
+                              address13 = null;
+                              var slice7 = null;
+                              if (this._input.length > this._offset) {
+                                slice7 = this._input.substring(this._offset, this._offset + 1);
+                              } else {
+                                slice7 = null;
+                              }
+                              if (!this.error || this.error.offset <= this._offset) {
+                                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"else\""};
+                              }
+                            }
+                            if (address13) {
+                              elements2.push(address13);
+                              text2 += address13.textValue;
+                              var address14 = null;
+                              address14 = this.__consume___();
+                              if (address14) {
+                                elements2.push(address14);
+                                text2 += address14.textValue;
+                                labelled1._ = address14;
+                                var address15 = null;
+                                var slice8 = null;
+                                if (this._input.length > this._offset) {
+                                  slice8 = this._input.substring(this._offset, this._offset + 2);
+                                } else {
+                                  slice8 = null;
+                                }
+                                if (slice8 === "if") {
+                                  var klass4 = this.constructor.SyntaxNode;
+                                  var type4 = null;
+                                  address15 = new klass4("if", this._offset, []);
+                                  if (typeof type4 === "object") {
+                                    extend(address15, type4);
+                                  }
+                                  this._offset += 2;
+                                } else {
+                                  address15 = null;
+                                  var slice9 = null;
+                                  if (this._input.length > this._offset) {
+                                    slice9 = this._input.substring(this._offset, this._offset + 1);
+                                  } else {
+                                    slice9 = null;
+                                  }
+                                  if (!this.error || this.error.offset <= this._offset) {
+                                    this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"if\""};
+                                  }
+                                }
+                                if (address15) {
+                                  elements2.push(address15);
+                                  text2 += address15.textValue;
+                                  var address16 = null;
+                                  address16 = this.__consume___();
+                                  if (address16) {
+                                    elements2.push(address16);
+                                    text2 += address16.textValue;
+                                    labelled1._ = address16;
+                                    var address17 = null;
+                                    var slice10 = null;
+                                    if (this._input.length > this._offset) {
+                                      slice10 = this._input.substring(this._offset, this._offset + 1);
+                                    } else {
+                                      slice10 = null;
+                                    }
+                                    if (slice10 === "(") {
+                                      var klass5 = this.constructor.SyntaxNode;
+                                      var type5 = null;
+                                      address17 = new klass5("(", this._offset, []);
+                                      if (typeof type5 === "object") {
+                                        extend(address17, type5);
+                                      }
+                                      this._offset += 1;
+                                    } else {
+                                      address17 = null;
+                                      var slice11 = null;
+                                      if (this._input.length > this._offset) {
+                                        slice11 = this._input.substring(this._offset, this._offset + 1);
+                                      } else {
+                                        slice11 = null;
+                                      }
+                                      if (!this.error || this.error.offset <= this._offset) {
+                                        this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"(\""};
+                                      }
+                                    }
+                                    if (address17) {
+                                      elements2.push(address17);
+                                      text2 += address17.textValue;
+                                      var address18 = null;
+                                      address18 = this.__consume___();
+                                      if (address18) {
+                                        elements2.push(address18);
+                                        text2 += address18.textValue;
+                                        labelled1._ = address18;
+                                        var address19 = null;
+                                        address19 = this.__consume__expr();
+                                        if (address19) {
+                                          elements2.push(address19);
+                                          text2 += address19.textValue;
+                                          labelled1.expr = address19;
+                                          var address20 = null;
+                                          address20 = this.__consume___();
+                                          if (address20) {
+                                            elements2.push(address20);
+                                            text2 += address20.textValue;
+                                            labelled1._ = address20;
+                                            var address21 = null;
+                                            var slice12 = null;
+                                            if (this._input.length > this._offset) {
+                                              slice12 = this._input.substring(this._offset, this._offset + 1);
+                                            } else {
+                                              slice12 = null;
+                                            }
+                                            if (slice12 === ")") {
+                                              var klass6 = this.constructor.SyntaxNode;
+                                              var type6 = null;
+                                              address21 = new klass6(")", this._offset, []);
+                                              if (typeof type6 === "object") {
+                                                extend(address21, type6);
+                                              }
+                                              this._offset += 1;
+                                            } else {
+                                              address21 = null;
+                                              var slice13 = null;
+                                              if (this._input.length > this._offset) {
+                                                slice13 = this._input.substring(this._offset, this._offset + 1);
+                                              } else {
+                                                slice13 = null;
+                                              }
+                                              if (!this.error || this.error.offset <= this._offset) {
+                                                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\")\""};
+                                              }
+                                            }
+                                            if (address21) {
+                                              elements2.push(address21);
+                                              text2 += address21.textValue;
+                                              var address22 = null;
+                                              address22 = this.__consume___();
+                                              if (address22) {
+                                                elements2.push(address22);
+                                                text2 += address22.textValue;
+                                                labelled1._ = address22;
+                                                var address23 = null;
+                                                address23 = this.__consume__block();
+                                                if (address23) {
+                                                  elements2.push(address23);
+                                                  text2 += address23.textValue;
+                                                  labelled1.block = address23;
+                                                } else {
+                                                  elements2 = null;
+                                                  this._offset = index3;
+                                                }
+                                              } else {
+                                                elements2 = null;
+                                                this._offset = index3;
+                                              }
+                                            } else {
+                                              elements2 = null;
+                                              this._offset = index3;
+                                            }
+                                          } else {
+                                            elements2 = null;
+                                            this._offset = index3;
+                                          }
+                                        } else {
+                                          elements2 = null;
+                                          this._offset = index3;
+                                        }
+                                      } else {
+                                        elements2 = null;
+                                        this._offset = index3;
+                                      }
+                                    } else {
+                                      elements2 = null;
+                                      this._offset = index3;
+                                    }
+                                  } else {
+                                    elements2 = null;
+                                    this._offset = index3;
+                                  }
+                                } else {
+                                  elements2 = null;
+                                  this._offset = index3;
+                                }
+                              } else {
+                                elements2 = null;
+                                this._offset = index3;
+                              }
+                            } else {
+                              elements2 = null;
+                              this._offset = index3;
+                            }
+                          } else {
+                            elements2 = null;
+                            this._offset = index3;
+                          }
+                          if (elements2) {
+                            this._offset = index3;
+                            var klass7 = this.constructor.SyntaxNode;
+                            var type7 = null;
+                            address11 = new klass7(text2, this._offset, elements2, labelled1);
+                            if (typeof type7 === "object") {
+                              extend(address11, type7);
+                            }
+                            this._offset += text2.length;
+                          } else {
+                            address11 = null;
+                          }
+                          if (address11) {
+                            elements1.push(address11);
+                            text1 += address11.textValue;
+                            remaining0 -= 1;
+                          }
+                        }
+                        if (remaining0 <= 0) {
+                          this._offset = index2;
+                          var klass8 = this.constructor.SyntaxNode;
+                          var type8 = null;
+                          address10 = new klass8(text1, this._offset, elements1);
+                          if (typeof type8 === "object") {
+                            extend(address10, type8);
+                          }
+                          this._offset += text1.length;
+                        } else {
+                          address10 = null;
+                        }
+                        if (address10) {
+                          elements0.push(address10);
+                          text0 += address10.textValue;
+                          var address24 = null;
+                          var index4 = this._offset;
+                          var index5 = this._offset, elements3 = [], labelled2 = {}, text3 = "";
+                          var address25 = null;
+                          address25 = this.__consume___();
+                          if (address25) {
+                            elements3.push(address25);
+                            text3 += address25.textValue;
+                            labelled2._ = address25;
+                            var address26 = null;
+                            var slice14 = null;
+                            if (this._input.length > this._offset) {
+                              slice14 = this._input.substring(this._offset, this._offset + 4);
+                            } else {
+                              slice14 = null;
+                            }
+                            if (slice14 === "else") {
+                              var klass9 = this.constructor.SyntaxNode;
+                              var type9 = null;
+                              address26 = new klass9("else", this._offset, []);
+                              if (typeof type9 === "object") {
+                                extend(address26, type9);
+                              }
+                              this._offset += 4;
+                            } else {
+                              address26 = null;
+                              var slice15 = null;
+                              if (this._input.length > this._offset) {
+                                slice15 = this._input.substring(this._offset, this._offset + 1);
+                              } else {
+                                slice15 = null;
+                              }
+                              if (!this.error || this.error.offset <= this._offset) {
+                                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"else\""};
+                              }
+                            }
+                            if (address26) {
+                              elements3.push(address26);
+                              text3 += address26.textValue;
+                              var address27 = null;
+                              address27 = this.__consume___();
+                              if (address27) {
+                                elements3.push(address27);
+                                text3 += address27.textValue;
+                                labelled2._ = address27;
+                                var address28 = null;
+                                address28 = this.__consume__block();
+                                if (address28) {
+                                  elements3.push(address28);
+                                  text3 += address28.textValue;
+                                  labelled2.block = address28;
+                                } else {
+                                  elements3 = null;
+                                  this._offset = index5;
+                                }
+                              } else {
+                                elements3 = null;
+                                this._offset = index5;
+                              }
+                            } else {
+                              elements3 = null;
+                              this._offset = index5;
+                            }
+                          } else {
+                            elements3 = null;
+                            this._offset = index5;
+                          }
+                          if (elements3) {
+                            this._offset = index5;
+                            var klass10 = this.constructor.SyntaxNode;
+                            var type10 = null;
+                            address24 = new klass10(text3, this._offset, elements3, labelled2);
+                            if (typeof type10 === "object") {
+                              extend(address24, type10);
+                            }
+                            this._offset += text3.length;
+                          } else {
+                            address24 = null;
+                          }
+                          if (address24) {
+                          } else {
+                            this._offset = index4;
+                            var klass11 = this.constructor.SyntaxNode;
+                            var type11 = null;
+                            address24 = new klass11("", this._offset, []);
+                            if (typeof type11 === "object") {
+                              extend(address24, type11);
+                            }
+                            this._offset += 0;
+                          }
+                          if (address24) {
+                            elements0.push(address24);
+                            text0 += address24.textValue;
+                            var address29 = null;
+                            address29 = this.__consume___();
+                            if (address29) {
+                              elements0.push(address29);
+                              text0 += address29.textValue;
+                              labelled0._ = address29;
+                              var address30 = null;
+                              var index6 = this._offset;
+                              var slice16 = null;
+                              if (this._input.length > this._offset) {
+                                slice16 = this._input.substring(this._offset, this._offset + 1);
+                              } else {
+                                slice16 = null;
+                              }
+                              if (slice16 === ";") {
+                                var klass12 = this.constructor.SyntaxNode;
+                                var type12 = null;
+                                address30 = new klass12(";", this._offset, []);
+                                if (typeof type12 === "object") {
+                                  extend(address30, type12);
+                                }
+                                this._offset += 1;
+                              } else {
+                                address30 = null;
+                                var slice17 = null;
+                                if (this._input.length > this._offset) {
+                                  slice17 = this._input.substring(this._offset, this._offset + 1);
+                                } else {
+                                  slice17 = null;
+                                }
+                                if (!this.error || this.error.offset <= this._offset) {
+                                  this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\";\""};
+                                }
+                              }
+                              if (address30) {
+                              } else {
+                                this._offset = index6;
+                                var klass13 = this.constructor.SyntaxNode;
+                                var type13 = null;
+                                address30 = new klass13("", this._offset, []);
+                                if (typeof type13 === "object") {
+                                  extend(address30, type13);
+                                }
+                                this._offset += 0;
+                              }
+                              if (address30) {
+                                elements0.push(address30);
+                                text0 += address30.textValue;
+                              } else {
+                                elements0 = null;
+                                this._offset = index1;
+                              }
+                            } else {
+                              elements0 = null;
+                              this._offset = index1;
+                            }
+                          } else {
+                            elements0 = null;
+                            this._offset = index1;
+                          }
+                        } else {
+                          elements0 = null;
+                          this._offset = index1;
+                        }
+                      } else {
+                        elements0 = null;
+                        this._offset = index1;
+                      }
+                    } else {
+                      elements0 = null;
+                      this._offset = index1;
+                    }
+                  } else {
+                    elements0 = null;
+                    this._offset = index1;
+                  }
+                } else {
+                  elements0 = null;
+                  this._offset = index1;
+                }
+              } else {
+                elements0 = null;
+                this._offset = index1;
+              }
+            } else {
+              elements0 = null;
+              this._offset = index1;
+            }
+          } else {
+            elements0 = null;
+            this._offset = index1;
+          }
+        } else {
+          elements0 = null;
+          this._offset = index1;
+        }
+      } else {
+        elements0 = null;
+        this._offset = index1;
+      }
+      if (elements0) {
+        this._offset = index1;
+        var klass14 = this.constructor.SyntaxNode;
+        var type14 = find(this.constructor, "IfStmt");
+        address0 = new klass14(text0, this._offset, elements0, labelled0);
+        if (typeof type14 === "object") {
+          extend(address0, type14);
+        }
+        this._offset += text0.length;
+      } else {
+        address0 = null;
+      }
+      return this._nodeCache["if_stmt"][index0] = address0;
     },
     __consume__expr: function(input) {
       var address0 = null, index0 = this._offset;
@@ -2748,11 +3520,11 @@
                   text0 += address13.textValue;
                   labelled0._ = address13;
                   var address14 = null;
-                  address14 = this.__consume__block();
+                  address14 = this.__consume__funblock();
                   if (address14) {
                     elements0.push(address14);
                     text0 += address14.textValue;
-                    labelled0.block = address14;
+                    labelled0.funblock = address14;
                   } else {
                     elements0 = null;
                     this._offset = index1;
@@ -5341,6 +6113,10 @@
         }
       }
       if (address0) {
+        var type1 = find(this.constructor, "SpecialNode");
+        if (typeof type1 === "object") {
+          extend(address0, type1);
+        }
       } else {
         this._offset = index1;
         var slice2 = null;
@@ -5351,10 +6127,10 @@
         }
         if (slice2 === "false") {
           var klass1 = this.constructor.SyntaxNode;
-          var type1 = null;
+          var type2 = null;
           address0 = new klass1("false", this._offset, []);
-          if (typeof type1 === "object") {
-            extend(address0, type1);
+          if (typeof type2 === "object") {
+            extend(address0, type2);
           }
           this._offset += 5;
         } else {
@@ -5370,22 +6146,26 @@
           }
         }
         if (address0) {
+          var type3 = find(this.constructor, "SpecialNode");
+          if (typeof type3 === "object") {
+            extend(address0, type3);
+          }
         } else {
           this._offset = index1;
           var slice4 = null;
           if (this._input.length > this._offset) {
-            slice4 = this._input.substring(this._offset, this._offset + 18);
+            slice4 = this._input.substring(this._offset, this._offset + 4);
           } else {
             slice4 = null;
           }
-          if (slice4 === "null <SpecialNode>") {
+          if (slice4 === "null") {
             var klass2 = this.constructor.SyntaxNode;
-            var type2 = null;
-            address0 = new klass2("null <SpecialNode>", this._offset, []);
-            if (typeof type2 === "object") {
-              extend(address0, type2);
+            var type4 = null;
+            address0 = new klass2("null", this._offset, []);
+            if (typeof type4 === "object") {
+              extend(address0, type4);
             }
-            this._offset += 18;
+            this._offset += 4;
           } else {
             address0 = null;
             var slice5 = null;
@@ -5395,10 +6175,14 @@
               slice5 = null;
             }
             if (!this.error || this.error.offset <= this._offset) {
-              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"null <SpecialNode>\""};
+              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"null\""};
             }
           }
           if (address0) {
+            var type5 = find(this.constructor, "SpecialNode");
+            if (typeof type5 === "object") {
+              extend(address0, type5);
+            }
           } else {
             this._offset = index1;
           }
