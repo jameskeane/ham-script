@@ -1,8 +1,6 @@
 (function() {
   var tmp = [];
-  <% _.each(params, function(p, i) { %>
-  var <%= p %> = <%= providers[i] %>;
-  <% }); %>
+  <% _.each(params, function(p, i) { %> var <%= p %> = <%= providers[i] %>; <% }); %>
 
   var evaluator = function(<%= params.join(', ') %>) {
     return <%= body %>;

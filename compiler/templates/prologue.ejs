@@ -17,5 +17,17 @@
     }
   };
 
+  Array.prototype.map = function(m) {
+    var ret = [];
+    this.each(function(it) { ret.push(m(it)); });
+    return ret;
+  }
+
+  Array.prototype.filter = function(f) {
+    var ret = [];
+    this.each(function(it) { if(f(it)) ret.push(it); });
+    return ret;
+  }
+
   <%= body %>
 })();

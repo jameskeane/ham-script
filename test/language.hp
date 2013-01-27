@@ -42,6 +42,6 @@ String::startsWith = |x| { 2 };
 var square = [x*z | x <- y, z <- q];
 
 // functional programming
-//[1, 2, 3].map(|x| { x*2 });
-//[2, 3, 4].filter(|x| { x % 2 });
-//[1, 2, 3].reduce(|x, r| { r += x });
+[1, 2, 3].map(|x| { x*2 });
+[2, 3, 4].filter(|x| { x % 2 });
+[1, 2, 3].reduce(|x, r| { r += x });

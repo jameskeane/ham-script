@@ -121,11 +121,9 @@ lang.Parser.ValueAccessor = {
     var ret = this.value.toJS(state);
 
     if(this.elements[1].textValue !== '') {
-
-      console.log(this.elements);
       this.elements[1].elements.forEach(function(el) {
-        if(el.value_acs) {
-          ret += '.' + el.value_acs.toJS(state);
+        if(el.value) {
+          ret += '.' + el.value.toJS(state);
         } else {
           ret += el.accessor.toJS(state);
         }
@@ -178,7 +176,7 @@ lang.Parser.Expression = {
     var ret = this.value_acs.toJS(state, indent+1);
 
     var next = this.elements[1].elements[0];
-    if(next.textValue !== '') {
+    if(next != undefined && next.textValue !== '') {
       ret += ' ' + next.elements[1].textValue;
       ret += ' ' + next.value_acs.toJS();
     }
