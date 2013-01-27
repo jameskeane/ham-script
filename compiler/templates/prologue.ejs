@@ -1,7 +1,7 @@
 (function() {
   Object.prototype.extend = function(obj) {
     return obj;
-  }
+  };
 
   // TODO: handle negative step
   Array.prototype.step = function(step) {
@@ -9,7 +9,13 @@
     for(var i = 0; i < this.length; i += step)
       ret.push(this[i]);
     return ret;
-  }
+  };
+
+  Array.prototype.each = function(it) {
+    for(var i = 0; i < this.length; i++) {
+      it(this[i]);
+    }
+  };
 
   <%= body %>
 })();

@@ -1,18 +1,16 @@
 // lambda's are a lot less to type
 // functions taking one lambda argument can drop the parens
 
-
-j().j().j().j()[3];
-
-j(x, y);
-
-[1..10].each |item| {
+[1..10][1::2].each |item| {
   console.log(item);
 };
 
-// if a lambda's body is a single expression, the return statement is implied
+[x*x | x <- [1..10]].each |i| {
+  console.log(i);
+};
 
-||{ 3 + 3}() is 6;
+// if a lambda's body is a single expression, the return statement is implied
+// ||{ 3 + 3}() is 6;
 
 // if a lambda doesn't take any arguments its || can be dropped and just become
 // a block

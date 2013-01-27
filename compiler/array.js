@@ -11,12 +11,12 @@ module.exports.ArrayAccess = ASTNode.extend({
 
 module.exports.ArraySlice = ASTNode.extend({
   toJS: function(state) {
-    var ret = this.proto.toJS();
+    var ret = '';
 
     // slice
-    var start = this.elements[4].start.textValue,
-        end   = this.elements[4].end.textValue,
-        step  = this.elements[4].step.integer;
+    var start = this.elements[2].start.textValue,
+        end   = this.elements[2].end.textValue,
+        step  = this.elements[2].step.integer;
 
     start = start === '' ? '0' : start;
     if(start !== '0' || end !== '') {

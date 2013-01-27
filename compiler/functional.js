@@ -10,15 +10,15 @@ module.exports.ListComprehension = ASTNode.extend({
 
     var first = this.elements[6];
     params.push(first.ident_p.textValue);
-    providers.push(first.proto.toJS());
+    providers.push(first.expr.toJS());
 
     this.elements.slice(7, -2).forEach(function(p) {
       if(p.textValue === '') return;
       p = p.elements[0].elements[3];
-      if(p.ident_p === undefined || p.proto == undefined) return;
+      if(p.ident_p === undefined || p.expr == undefined) return;
       
       params.push(p.ident_p.textValue);
-      providers.push(p.proto.toJS());
+      providers.push(p.expr.toJS());
     });
 
     return {
@@ -58,7 +58,7 @@ module.exports.Lambda = ASTNode.extend({
 module.exports.FunctionInvocation = ASTNode.extend({
   serialize: function(state) {
     if(this.lambda) {
-      return "(" + this.lambda.toJS(state); + ");"
+      return "(" + this.lambda.toJS(state) + ");"
     }
 
     if(this.elements[2].textValue === '') {

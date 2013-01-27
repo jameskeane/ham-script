@@ -32,7 +32,7 @@ grammar harp
   object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
   object_p  <- _ name:(string / ident_p) _ ":" _ expr _
   lambda    <- ("|" _ (ident_p (_ "," _ ident_p)* )? _ "|")? _ funblock <Lambda>
-  listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ proto) (_ "," _ (ident_p _ "<-" _ proto))* _ "]" <ListComprehension>
+  listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ expr) (_ "," _ (ident_p _ "<-" _ expr))* _ "]" <ListComprehension>
 
   funcall   <- (_ lambda _ / "(" _ expr_list? _ ")") <FunctionInvocation>
   arrayacs  <- "[" _ (string / number) _ "]" _ <ArrayAccess>
@@ -42,7 +42,7 @@ grammar harp
   type      <- "string" / "number" / ident  <Type>
   string    <- "\"" ( [^"\\] / ("\\" ["bfnrt\\/]) / hex )* "\"" <StringNode>
   number    <- "-"? ( ("0" / [1-9] [0-9]*) ("." [0-9]+)? ( ("e" / "E") ("+" / "-")? [0-9]+ )? ) <NumberNode>
-  integer   <- "-"? [1-9] [0-9]*
+  integer   <- "-"? ([0] / [1-9] [0-9]*)
 
   proto     <- ident ("::" ident_p)? <PrototypeExpander>
   ident     <- ident_p ("." ident_p)* <Identifier>

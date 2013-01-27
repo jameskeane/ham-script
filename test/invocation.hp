@@ -9,6 +9,8 @@ arr;
 3.3.hi;
 "hello".length;
 
+j().j().j().j()[3];
+
 3.times {
   
 };

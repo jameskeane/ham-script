@@ -1,11 +1,15 @@
 (function() {
   var tmp = [];
+  <% _.each(params, function(p, i) { %>
+  var <%= p %> = <%= providers[i] %>;
+  <% }); %>
+
   var evaluator = function(<%= params.join(', ') %>) {
     return <%= body %>;
   };
 
-  for(var i = 0; i < Math.min(<%= providers.join('.length, ') + '.length' %>); i++) {
-    tmp.push(evaluator(<%= providers.join('[i], ') + '[i]' %>));
+  for(var i = 0; i < Math.min(<%= params.join('.length, ') + '.length' %>); i++) {
+    tmp.push(evaluator(<%= params.join('[i], ') + '[i]' %>));
   }
 
   return tmp;
