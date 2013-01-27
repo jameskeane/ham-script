@@ -145,7 +145,7 @@ lang.Parser.Identifier = {
 
 lang.Parser.ExprStmt = {
   toJS: function(state, indent) {
-    return this.elements[0].toJS(state, indent+1);
+    return this.elements[0].toJS(state, indent+1) + ';';
   }
 }
 
@@ -169,7 +169,7 @@ lang.Parser.Expression = {
   toJS: function(state, indent) {
     var ret = this.value_acs.toJS(state, indent+1);
 
-    if(this.elements[1].value) {
+    if(this.elements[1].value_acs) {
       ret += ' ' + this.elements[1].elements[1].textValue;
       ret += ' ' + this.elements[1].value_acs.toJS();
     }
