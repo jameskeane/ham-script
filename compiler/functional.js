@@ -35,27 +35,36 @@ module.exports.Lambda = ASTNode.extend({
   serialize: function(state, indent) {
     // get the params
     var params = [];
-    var first = this.elements[2].ident_p.textValue;
-    if(first !== '') {
-      params.push(first);
-      this.elements[2].elements[1].elements.forEach(function(el) {
-        params.push(el.ident_p.textValue);
-      });
+
+    // Is it a no param list lambda?
+    if(this.elements[0].textValue !== '') {
+      var first = this.elements[0].elements[2].ident_p;
+      if(first !== undefined) {
+        params.push(first.textValue);
+        var it = this.elements[0].elements[2].elements[1];
+        it.forEach(function(el) {
+          params.push(el.ident_p.elements[0].textValue);
+        });
+      }
     }
 
     return {
       params: params,
-      body: this.block.toJS(state)
+      body: this.funblock.toJS(state)
     }
   }
 });
 
 module.exports.FunctionInvocation = ASTNode.extend({
   serialize: function(state) {
-    var name = this.callable.toJS();
-    if(this.elements[4].textValue === '')
-      return name + "();";
+    if(this.lambda) {
+      return "(" + this.lambda.toJS(state); + ");"
+    }
 
-    return name + "(" + this.elements[4].toJS(state) + ");";
+    if(this.elements[2].textValue === '') {
+      return "();";
+    }
+
+    return "(" + this.elements[2].toJS(state) + ");";
   }
 });

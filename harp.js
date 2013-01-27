@@ -115,10 +115,22 @@ lang.Parser.ExprList = {
   }
 }
 
-lang.Parser.IdentiferChain = {
+lang.Parser.ValueAccessor = {
   toJS: function(state) {
     // TODO
-    return this.textValue;
+    var ret = this.value.toJS(state);
+
+    if(this.elements[1].textValue !== '') {
+      this.elements[1].elements.forEach(function(el) {
+        if(el.value) {
+          ret += '.' + el.value.toJS(state);
+        } else {
+          ret += el.accessor.toJS(state);
+        }
+      });
+    }
+
+    return ret;
   }
 }
 
@@ -155,11 +167,11 @@ lang.Parser.ReturnStmt = {
 
 lang.Parser.Expression = {
   toJS: function(state, indent) {
-    var ret = this.value.toJS(state, indent+1);
+    var ret = this.value_acs.toJS(state, indent+1);
 
     if(this.elements[1].value) {
       ret += ' ' + this.elements[1].elements[1].textValue;
-      ret += ' ' + this.elements[1].value.toJS();
+      ret += ' ' + this.elements[1].value_acs.toJS();
     }
 
     return ret;

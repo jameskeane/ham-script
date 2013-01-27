@@ -14,13 +14,13 @@ grammar harp
                (_ "else" _ "if" _ "(" _ expr _ ")" _ block)*
                (_ "else" _ block)? _ ";"? <IfStmt>
 
-  expr      <- value ( _ binaryop _ value )? <Expression>
-  binaryop  <- "or" / "+=" / [-+=*]
+  expr      <- value_acs ( _ binaryop _ value_acs )? <Expression>
+  binaryop  <- "or" / "+=" / "is" / "==" / "!=" / [-+=*]
 
-  value     <- lhs (access? ("." lhs (_ access)?)* access?)? <IdentiferChain>
-  lhs       <- number / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp
-  chain_pp  <- "(" _ lhs _ ")"
-  access    <- (arrayslc / arrayacs / funcall)
+  value_acs <- value ( (_ "." _ value) / (_ accessor) )* <ValueAccessor>
+  value     <- number / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp
+  chain_pp  <- "(" _ expr _ ")"
+  accessor  <- arrayslc / arrayacs / funcall
 
   pp_expr   <- "(" _ expr _ ")"
 
@@ -31,10 +31,10 @@ grammar harp
 
   object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
   object_p  <- _ name:(string / ident_p) _ ":" _ expr _
-  lambda    <- "|" _ (ident_p (_ "," _ ident_p)* )? _ "|" _ funblock <Lambda>
+  lambda    <- ("|" _ (ident_p (_ "," _ ident_p)* )? _ "|")? _ funblock <Lambda>
   listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ proto) (_ "," _ (ident_p _ "<-" _ proto))* _ "]" <ListComprehension>
 
-  funcall   <- "(" _ expr_list? _ ")" <FunctionInvocation>
+  funcall   <- (_ lambda _ / "(" _ expr_list? _ ")") <FunctionInvocation>
   arrayacs  <- "[" _ (string / number) _ "]" _ <ArrayAccess>
   arrayslc  <- "[" _ slice _ "]" _ <ArraySlice>
 

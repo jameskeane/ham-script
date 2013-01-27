@@ -3,10 +3,9 @@ var _ = require('underscore'),
 
 module.exports.ArrayAccess = ASTNode.extend({
   toJS: function(state) {
-    var ret = this.proto.toJS();
-    var accessor = this.elements[4].toJS();
+    var accessor = this.elements[2].toJS();
 
-    return ret + '[' + accessor + ']';
+    return '[' + accessor + ']';
   }
 });
 
