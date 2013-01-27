@@ -1,1 +1,13 @@
 3 + 3;
+
+3 + 3 + 3;
+
+3 + (6 * 2);
+
+3^2;
+
+// TODO: unary operators
+// not true;
+// not false;
+// + a / - a;
+// 3++ / 3-- / --a / ++a / !a

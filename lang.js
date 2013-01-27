@@ -2444,10 +2444,10 @@
         } else {
           slice2 = null;
         }
-        if (slice2 === "+=") {
+        if (slice2 === "is") {
           var klass1 = this.constructor.SyntaxNode;
           var type1 = null;
-          address0 = new klass1("+=", this._offset, []);
+          address0 = new klass1("is", this._offset, []);
           if (typeof type1 === "object") {
             extend(address0, type1);
           }
@@ -2461,7 +2461,7 @@
             slice3 = null;
           }
           if (!this.error || this.error.offset <= this._offset) {
-            this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"+=\""};
+            this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"is\""};
           }
         }
         if (address0) {
@@ -2469,18 +2469,18 @@
           this._offset = index1;
           var slice4 = null;
           if (this._input.length > this._offset) {
-            slice4 = this._input.substring(this._offset, this._offset + 2);
+            slice4 = this._input.substring(this._offset, this._offset + 4);
           } else {
             slice4 = null;
           }
-          if (slice4 === "is") {
+          if (slice4 === "isnt") {
             var klass2 = this.constructor.SyntaxNode;
             var type2 = null;
-            address0 = new klass2("is", this._offset, []);
+            address0 = new klass2("isnt", this._offset, []);
             if (typeof type2 === "object") {
               extend(address0, type2);
             }
-            this._offset += 2;
+            this._offset += 4;
           } else {
             address0 = null;
             var slice5 = null;
@@ -2490,7 +2490,7 @@
               slice5 = null;
             }
             if (!this.error || this.error.offset <= this._offset) {
-              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"is\""};
+              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"isnt\""};
             }
           }
           if (address0) {
@@ -2502,10 +2502,10 @@
             } else {
               slice6 = null;
             }
-            if (slice6 === "==") {
+            if (slice6 === "+=") {
               var klass3 = this.constructor.SyntaxNode;
               var type3 = null;
-              address0 = new klass3("==", this._offset, []);
+              address0 = new klass3("+=", this._offset, []);
               if (typeof type3 === "object") {
                 extend(address0, type3);
               }
@@ -2519,7 +2519,7 @@
                 slice7 = null;
               }
               if (!this.error || this.error.offset <= this._offset) {
-                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"==\""};
+                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"+=\""};
               }
             }
             if (address0) {
@@ -2531,10 +2531,10 @@
               } else {
                 slice8 = null;
               }
-              if (slice8 === "!=") {
+              if (slice8 === "*=") {
                 var klass4 = this.constructor.SyntaxNode;
                 var type4 = null;
-                address0 = new klass4("!=", this._offset, []);
+                address0 = new klass4("*=", this._offset, []);
                 if (typeof type4 === "object") {
                   extend(address0, type4);
                 }
@@ -2548,7 +2548,7 @@
                   slice9 = null;
                 }
                 if (!this.error || this.error.offset <= this._offset) {
-                  this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"!=\""};
+                  this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"*=\""};
                 }
               }
               if (address0) {
@@ -2556,18 +2556,18 @@
                 this._offset = index1;
                 var slice10 = null;
                 if (this._input.length > this._offset) {
-                  slice10 = this._input.substring(this._offset, this._offset + 1);
+                  slice10 = this._input.substring(this._offset, this._offset + 2);
                 } else {
                   slice10 = null;
                 }
-                if (slice10 && /^[-+=*]/.test(slice10)) {
+                if (slice10 === "/=") {
                   var klass5 = this.constructor.SyntaxNode;
                   var type5 = null;
-                  address0 = new klass5(slice10, this._offset, []);
+                  address0 = new klass5("/=", this._offset, []);
                   if (typeof type5 === "object") {
                     extend(address0, type5);
                   }
-                  this._offset += 1;
+                  this._offset += 2;
                 } else {
                   address0 = null;
                   var slice11 = null;
@@ -2577,12 +2577,192 @@
                     slice11 = null;
                   }
                   if (!this.error || this.error.offset <= this._offset) {
-                    this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "[-+=*]"};
+                    this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"/=\""};
                   }
                 }
                 if (address0) {
                 } else {
                   this._offset = index1;
+                  var slice12 = null;
+                  if (this._input.length > this._offset) {
+                    slice12 = this._input.substring(this._offset, this._offset + 2);
+                  } else {
+                    slice12 = null;
+                  }
+                  if (slice12 === "-=") {
+                    var klass6 = this.constructor.SyntaxNode;
+                    var type6 = null;
+                    address0 = new klass6("-=", this._offset, []);
+                    if (typeof type6 === "object") {
+                      extend(address0, type6);
+                    }
+                    this._offset += 2;
+                  } else {
+                    address0 = null;
+                    var slice13 = null;
+                    if (this._input.length > this._offset) {
+                      slice13 = this._input.substring(this._offset, this._offset + 1);
+                    } else {
+                      slice13 = null;
+                    }
+                    if (!this.error || this.error.offset <= this._offset) {
+                      this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"-=\""};
+                    }
+                  }
+                  if (address0) {
+                  } else {
+                    this._offset = index1;
+                    var slice14 = null;
+                    if (this._input.length > this._offset) {
+                      slice14 = this._input.substring(this._offset, this._offset + 2);
+                    } else {
+                      slice14 = null;
+                    }
+                    if (slice14 === "%=") {
+                      var klass7 = this.constructor.SyntaxNode;
+                      var type7 = null;
+                      address0 = new klass7("%=", this._offset, []);
+                      if (typeof type7 === "object") {
+                        extend(address0, type7);
+                      }
+                      this._offset += 2;
+                    } else {
+                      address0 = null;
+                      var slice15 = null;
+                      if (this._input.length > this._offset) {
+                        slice15 = this._input.substring(this._offset, this._offset + 1);
+                      } else {
+                        slice15 = null;
+                      }
+                      if (!this.error || this.error.offset <= this._offset) {
+                        this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"%=\""};
+                      }
+                    }
+                    if (address0) {
+                    } else {
+                      this._offset = index1;
+                      var slice16 = null;
+                      if (this._input.length > this._offset) {
+                        slice16 = this._input.substring(this._offset, this._offset + 2);
+                      } else {
+                        slice16 = null;
+                      }
+                      if (slice16 === "==") {
+                        var klass8 = this.constructor.SyntaxNode;
+                        var type8 = null;
+                        address0 = new klass8("==", this._offset, []);
+                        if (typeof type8 === "object") {
+                          extend(address0, type8);
+                        }
+                        this._offset += 2;
+                      } else {
+                        address0 = null;
+                        var slice17 = null;
+                        if (this._input.length > this._offset) {
+                          slice17 = this._input.substring(this._offset, this._offset + 1);
+                        } else {
+                          slice17 = null;
+                        }
+                        if (!this.error || this.error.offset <= this._offset) {
+                          this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"==\""};
+                        }
+                      }
+                      if (address0) {
+                      } else {
+                        this._offset = index1;
+                        var slice18 = null;
+                        if (this._input.length > this._offset) {
+                          slice18 = this._input.substring(this._offset, this._offset + 2);
+                        } else {
+                          slice18 = null;
+                        }
+                        if (slice18 === "!=") {
+                          var klass9 = this.constructor.SyntaxNode;
+                          var type9 = null;
+                          address0 = new klass9("!=", this._offset, []);
+                          if (typeof type9 === "object") {
+                            extend(address0, type9);
+                          }
+                          this._offset += 2;
+                        } else {
+                          address0 = null;
+                          var slice19 = null;
+                          if (this._input.length > this._offset) {
+                            slice19 = this._input.substring(this._offset, this._offset + 1);
+                          } else {
+                            slice19 = null;
+                          }
+                          if (!this.error || this.error.offset <= this._offset) {
+                            this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"!=\""};
+                          }
+                        }
+                        if (address0) {
+                        } else {
+                          this._offset = index1;
+                          var slice20 = null;
+                          if (this._input.length > this._offset) {
+                            slice20 = this._input.substring(this._offset, this._offset + 2);
+                          } else {
+                            slice20 = null;
+                          }
+                          if (slice20 === "**") {
+                            var klass10 = this.constructor.SyntaxNode;
+                            var type10 = null;
+                            address0 = new klass10("**", this._offset, []);
+                            if (typeof type10 === "object") {
+                              extend(address0, type10);
+                            }
+                            this._offset += 2;
+                          } else {
+                            address0 = null;
+                            var slice21 = null;
+                            if (this._input.length > this._offset) {
+                              slice21 = this._input.substring(this._offset, this._offset + 1);
+                            } else {
+                              slice21 = null;
+                            }
+                            if (!this.error || this.error.offset <= this._offset) {
+                              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"**\""};
+                            }
+                          }
+                          if (address0) {
+                          } else {
+                            this._offset = index1;
+                            var slice22 = null;
+                            if (this._input.length > this._offset) {
+                              slice22 = this._input.substring(this._offset, this._offset + 1);
+                            } else {
+                              slice22 = null;
+                            }
+                            if (slice22 && /^[-+=*\^/%]/.test(slice22)) {
+                              var klass11 = this.constructor.SyntaxNode;
+                              var type11 = null;
+                              address0 = new klass11(slice22, this._offset, []);
+                              if (typeof type11 === "object") {
+                                extend(address0, type11);
+                              }
+                              this._offset += 1;
+                            } else {
+                              address0 = null;
+                              var slice23 = null;
+                              if (this._input.length > this._offset) {
+                                slice23 = this._input.substring(this._offset, this._offset + 1);
+                              } else {
+                                slice23 = null;
+                              }
+                              if (!this.error || this.error.offset <= this._offset) {
+                                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "[-+=*\\^/%]"};
+                              }
+                            }
+                            if (address0) {
+                            } else {
+                              this._offset = index1;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -2942,7 +3122,7 @@
       if (elements0) {
         this._offset = index1;
         var klass2 = this.constructor.SyntaxNode;
-        var type2 = null;
+        var type2 = find(this.constructor, "ParenExpression");
         address0 = new klass2(text0, this._offset, elements0, labelled0);
         if (typeof type2 === "object") {
           extend(address0, type2);
