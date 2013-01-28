@@ -1,8 +1,8 @@
 Harp -- an altJS language
 =========================
 Harp is another altJS language, similar to [CoffeeScript](http://coffeescript.org/).  What makes Harp different is that it is written as a PEG,
-and does not have significant whitespace.  Harp looks very similar to Javascript at first, but offers (hopefully)
-many useful features.
+and does not have significant whitespace.  Harp looks very similar to Javascript at first, but offers many 
+(hopefully) useful features.
 
 Harp was written using the [Canopy](http://canopy.jcoglan.com/) PEG Parser Generator, and Javascript.  I am
 currently working towards self-hosting Harp but it is not quite there yet.
@@ -61,7 +61,7 @@ class Hamburger extends MeatMeal {
    eat: { console.log('om nom nom'); }
 };
 
-// Harp just uses Backbone style .extends() for inheritence, so this translates easily to:
+// Harp just uses Backbone style .extend() for inheritence, so this translates easily to:
 // var Hamburger = MeatMeal.extend({ ... });
 ```
 
@@ -71,7 +71,7 @@ Stolen from Coffeescript, is the prototype shortcut:
 String::startsWith = |str| { this.substr(0, str.length) === str };
 ```
 
-What else is comming?
+What else is coming?
 ---------------------
 
 ### Types
@@ -91,7 +91,7 @@ import Backbone, _ from 'vendor/backbone'; // would work great for browser, but 
 ```
 
 ### Decorators
-I also sometimes finding myself with a need for python style Decorators, so Harp will have some form of them.
+I am also sometimes finding myself with a need for python style Decorators, so Harp will have some form of them.
 ```Javascript
 @watch(notify_change)
 var the_ghost_man = 3;
