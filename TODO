@@ -1,0 +1,32 @@
+multi var decl:
+  var i = 1, p = 2;
+
+ambiguity:
+ {} -> is it an empty object or a function?
+
+unary operations.
+
+types? just contracts or should we infer what we can statically?
+
+annotations?
+ I really like python annotations, and would like to implement them.
+
+yield?
+  Is it even possible?
+  
+  i.e. 
+  var gen = { 
+    var i = 0;
+    while(true) {
+      yield i++;
+    }
+  }
+  becomes:
+  var gen = function() {
+    var i = 0;
+    return {
+      next: function() {
+        return i++;
+      }
+    }
+  }

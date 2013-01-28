@@ -9,6 +9,10 @@
   console.log(i);
 };
 
+var ident = {};
+ident['name'] = "james";
+console.log(ident['name']);
+
 // if a lambda's body is a single expression, the return statement is implied
 // ||{ 3 + 3}() is 6;
 

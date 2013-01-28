@@ -35,12 +35,13 @@ grammar harp
   listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ expr) (_ "," _ (ident_p _ "<-" _ expr))* _ "]" <ListComprehension>
 
   funcall   <- (_ lambda _ / "(" _ expr_list? _ ")") <FunctionInvocation>
-  arrayacs  <- "[" _ (string / number) _ "]" _ <ArrayAccess>
+  arrayacs  <- "[" _ expr _ "]" _ <ArrayAccess>
   arrayslc  <- "[" _ slice _ "]" _ <ArraySlice>
 
   slice     <- start:integer? ":" end:integer? step:(":" integer)?
   type      <- "string" / "number" / ident  <Type>
-  string    <- "\"" ( [^"\\] / ("\\" ["bfnrt\\/]) / hex )* "\"" <StringNode>
+  string    <- ("\"" ( [^"\\] / ("\\" ["bfnrt\\/]) / hex )* "\"" 
+             / "'" ( [^'\\] / ("\\" ["bfnrt\\/]) / hex )* "'") <StringNode>
   number    <- "-"? ( ("0" / [1-9] [0-9]*) ("." [0-9]+)? ( ("e" / "E") ("+" / "-")? [0-9]+ )? ) <NumberNode>
   integer   <- "-"? ([0] / [1-9] [0-9]*)
 

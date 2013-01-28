@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+var js = require('../harp').parse(require('fs').readFileSync(process.argv[2], 'utf8')).toJS();
+eval(js);
+//return require('vm').runInThisContext(js, process.argv[2]);

@@ -58,13 +58,13 @@ module.exports.Lambda = ASTNode.extend({
 module.exports.FunctionInvocation = ASTNode.extend({
   serialize: function(state) {
     if(this.lambda) {
-      return "(" + this.lambda.toJS(state) + ");"
+      return "(" + this.lambda.toJS(state) + ")";
     }
 
     if(this.elements[2].textValue === '') {
-      return "();";
+      return "()";
     }
 
-    return "(" + this.elements[2].toJS(state) + ");";
+    return "(" + this.elements[2].toJS(state) + ")";
   }
 });

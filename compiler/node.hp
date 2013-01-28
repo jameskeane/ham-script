@@ -1,0 +1,31 @@
+var _ = require('underscore');
+var fs = require('fs');
+
+// we will cache all compiled templates, so we don't have to read and recompile them
+var template_cache = {};
+
+class Node {
+  template: '',
+
+  serialize: {
+    return {};
+  },
+
+  toJS: |state| {
+    var data = this.serialize(state);
+    if(data.class == 'string') {
+      return data;
+    }
+
+    // read the template from cache or fs
+    var tmpl = template_cache[this.template];
+    if(tmpl == undefined) {
+      tmpl = _.template(fs.readFileSync(__dirname + '/templates/' + this.template + '.ejs', 'utf8'));
+      template_cache[this.template] = tmpl;
+    }
+
+    return tmpl(data);
+  }
+};
+
+module.exports = Node;

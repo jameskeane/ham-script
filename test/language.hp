@@ -1,5 +1,3 @@
-// q.parse('q; 1;').elements[1].elements[0].statement.expr
-
 import Backbone, _ from "vendor/backbone";
 
 var x:number = 3;
