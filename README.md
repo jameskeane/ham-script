@@ -1,4 +1,109 @@
 Harp -- an altJS language
 =========================
+Harp is another altJS language, similar to [CoffeeScript](http://coffeescript.org/).  What makes Harp different is that it is written as a PEG,
+and does not have significant whitespace.  Harp looks very similar to Javascript at first, but offers (hopefully)
+many useful features.
 
-comming soon.
+Harp was written using the [Canopy](http://canopy.jcoglan.com/) PEG Parser Generator, and Javascript.  I am
+currently working towards self-hosting Harp but it is not quite there yet.
+
+Harp is written in an MVC style manner, where model is the AST, view is the javascript translations 
+(using ejs templates), and the controller is the tree translators.  This makes Harp extremely easy to hack on, and fun!
+
+Syntax
+------
+Since Harp is extremely similar to Javascript, you can get almost perfect syntax hilighting for free by using the Javascript
+hilighters, which is a pretty neat side effect.
+
+### Array Ranges and Slices
+Harp supports [python style](http://stackoverflow.com/a/509295) list ranges and slicing.
+
+```Javascript
+var range = [1..5];
+
+range === [1, 2, 3, 4, 5];    // true
+range[1:] === [2, 3, 4, 5];   // true
+range[:4] === [1, 2, 3, 4];   // true
+range[::2] === [1, 3, 5];     // true
+```
+
+### List Comprehensions
+Harp supports list comprehensions, similar in style to Haskell.
+```Javascript
+var cross = [x*y | x <- range, y <- range[::-1]];
+```
+
+### Friendly Lambda's
+Harp makes it fun to use lambda's.
+```Javascript
+var sum = |x, y| { return x + y; }
+
+// If the body of the lambda is a single expression, 
+// then the `return` statement and semicolon can be dropped.
+var sum = |x, y| { x + y }
+
+// Lambda's are an easy way to iterate a list:
+[1, 2, 3].each(|| { console.log('repeating'); });
+
+// If the lambda takes no parameters, the `||` can be dropped.
+[1, 2, 3].each({ console.log('repeating');});
+
+// When invoking a function with a lambda as the _only_ parameter, the parentheses can be dropped
+[1, 2, 3].each {
+   console.log('repeating');
+};
+```
+
+### Classical Style Inheritence
+Some people would prefer to use Classical Inheritence instead of Javascript's prototypical inheritence, that's fine:
+```Javascript
+class Hamburger extends MeatMeal {
+   eat: { console.log('om nom nom'); }
+};
+
+// Harp just uses Backbone style .extends() for inheritence, so this translates easily to:
+// var Hamburger = MeatMeal.extend({ ... });
+```
+
+### Prototype shortcut
+Stolen from Coffeescript, is the prototype shortcut:
+```Javascript
+String::startsWith = |str| { this.substr(0, str.length) === str };
+```
+
+What else is comming?
+---------------------
+
+### Types
+Would be nice to have some inference at compile time, with contracts at runtime for what couldn't be inferred.
+```Javascript
+var x:string = 3; // TypeError -> typeof "x" is string.
+var sum = |x:num, y:num| { x + y }; // we could infer the return type easily here
+var idk = ||:string { "hello" }; // I'm not sold on the return type syntax here
+```
+
+### Imports
+I like python style imports, but I think it might be hard/impossible to reconcile it with CommonJS style require.
+Another option is to rewrite a CommonJS style require for the browser, similar to 
+[browserify](https://github.com/substack/node-browserify).
+```Javascript
+import Backbone, _ from 'vendor/backbone'; // would work great for browser, but hard for CommonJS
+```
+
+### Decorators
+I also sometimes finding myself with a need for python style Decorators, so Harp will have some form of them.
+```Javascript
+@watch(notify_change)
+var the_ghost_man = 3;
+```
+
+### Unary Operators
+Yeah, I haven't gotten around to unary operators yet.  I've been focussing on the cool stuff for now.
+
+### Loops
+I haven't implemented while or for loops yet, as I am still experimenting with syntax for them.  I've been getting by
+largely with the combination of ranges and list comprehensions with `.each`.
+
+Usage
+-----
+Clone this repo, write some Harp code, and do `./bin/harp <filename>' to evaluate it.
