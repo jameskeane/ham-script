@@ -1,21 +1,19 @@
 {
-  "name": "canopy-json",
+  "name": "harp",
   "version": "1.0.0",
-  "description": "A simple JSON parse demonstrating the Canopy PEG Generator",
-  "main": "json.js",
+  "description": "Better Javascript",
+  "main": "harp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jameskeane/canopy-json.git"
+    "url": "https://github.com/jameskeane/harp.git"
   },
   "keywords": [
-    "canopy",
+    "harp",
     "peg",
-    "json",
-    "parser",
-    "window.JSON"
+    "javascript"
   ],
   "author": "James Keane",
   "license": "BSD",
