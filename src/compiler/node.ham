@@ -13,7 +13,7 @@ class Node {
 
   toJS: |state| {
     var data = this.serialize(state);
-    if(data.class == 'string') {
+    if(data.length) {
       return data;
     }
 
@@ -28,4 +28,8 @@ class Node {
   }
 };
 
-module.exports = Node;
+module.exports = {
+  extend: |o| {
+    return _.defaults(o, Node.prototype);
+  }
+};
