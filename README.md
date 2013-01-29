@@ -106,5 +106,5 @@ largely with the combination of ranges and list comprehensions with `.each`.
 
 Usage
 -----
-`npm install -g harm`
-Then write some Ham.js code, and `harm <filename>` to run it.
+`npm install -g ham-script`
+Then write some Ham.js code, and `ham <filename>` to run it.
