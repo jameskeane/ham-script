@@ -1,0 +1,69 @@
+var _ = require('underscore');
+var ASTNode = require('./node');
+
+class ArrayAccess extends ASTNode {
+  toJS: |state| {
+    var accessor = this.elements[2].toJS(state);
+
+    return '[' + accessor + ']';
+  }
+};
+
+class ArraySlice extends ASTNode {
+  toJS: |state| {
+    var ret = '';
+
+    // slice
+    var start = this.elements[2].start.textValue;
+    var end   = this.elements[2].end.textValue;
+    var step  = this.elements[2].step.integer;
+
+    if(start isnt '' or end isnt '') {
+      if(start is '') { start = 0; }
+
+      ret += '.slice('+start;
+      if(end isnt '') {
+        ret += ', '+end;
+      }
+      ret += ')';
+    }
+    
+    if(step) {
+      ret += '.step(' + step.textValue + ')';
+    }
+    return ret;
+  }
+};
+
+class ArrayRange extends ASTNode {
+  template: 'array_range', 
+
+  serialize: |state| {
+    return {
+      start: this.start.textValue,
+      end: this.end.textValue
+    };
+  }
+};
+
+class ArrayDef extends ASTNode {
+  toJS: |state| {
+    if(this.elements[2].textValue is '') {
+      return "[]";
+    }
+
+    var first = this.elements[2];
+    var acc = [first.expr.elements[0].toJS(state)];
+
+    first.elements[1].elements.each |node| {
+      acc.push(node.expr.elements[0].toJS(state));
+    };
+
+    return "[" + acc.join(', ') + "]";
+  }
+};
+
+module.exports.ArrayAccess = ArrayAccess;
+module.exports.ArraySlice = ArraySlice;
+module.exports.ArrayRange = ArrayRange;
+module.exports.ArrayDef = ArrayDef;

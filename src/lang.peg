@@ -9,7 +9,7 @@ grammar ham
   import    <- "import" _ ident (_ "," _ ident)* _ "from" _ string _ ";" <Import>
   class_def <- "class" _ ident _ ("extends" _ ident _)? object _ ";" <ClassDef>
   variable  <- "var" _ ident (":" _ type)? (_ "=" _ expr)? _ ";" <VariableDef>
-  return    <- "return" _ expr? _ ";" <ReturnStmt>
+  return    <- "return" _ expr:expr? _ ";" <ReturnStmt>
   if_stmt   <- "if" _ "(" _ expr _ ")" _ block
                (_ "else" _ "if" _ "(" _ expr _ ")" _ block)*
                (_ "else" _ block)? _ ";"? <IfStmt>

@@ -161,7 +161,12 @@ lang.Parser.Type = {
 
 lang.Parser.ReturnStmt = {
   toJS: function(state, indent) {
-    return this.textValue;
+    var ret = "return";
+    if(this.expr.toJS) {
+      ret += " " + this.expr.toJS(state);
+    }
+    ret += ';';
+    return ret;
   }
 }
 
