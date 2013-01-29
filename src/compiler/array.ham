@@ -6,67 +6,58 @@ class ArrayAccess extends ASTNode {
     this.source.add('[');
     this.source.add(this.elements[2].walk(state));
     this.source.add(']');
-    return this.source;
-  },
-
-  toJS: |state| {
-    var accessor = this.elements[2].toJS(state);
-
-    return '[' + accessor + ']';
   }
 };
 
 class ArraySlice extends ASTNode {
-  toJS: |state| {
-    var ret = '';
-
-    // slice
+  serialize: |state| {
     var start = this.elements[2].start.textValue;
     var end   = this.elements[2].end.textValue;
     var step  = this.elements[2].step.integer;
 
+
     if(start isnt '' or end isnt '') {
       if(start is '') { start = 0; }
 
-      ret += '.slice('+start;
+      this.source.add('.slice('+start);
       if(end isnt '') {
-        ret += ', '+end;
+        this.source.add(', '+end);
       }
-      ret += ')';
+      this.source.add(')');
     }
     
     if(step) {
-      ret += '.step(' + step.textValue + ')';
+      this.source.add('.step(' + step.textValue + ')');
     }
-    return ret;
   }
 };
 
 class ArrayRange extends ASTNode {
-  template: 'array_range', 
+  template: 'array_range',
 
   serialize: |state| {
-    return {
+    this.source.add(this.compile({
       start: this.start.textValue,
       end: this.end.textValue
-    };
+    }));
   }
 };
 
 class ArrayDef extends ASTNode {
-  toJS: |state| {
-    if(this.elements[2].textValue is '') {
-      return "[]";
+  serialize: |state| {
+    this.source.add('[');
+
+    if(this.elements[2].textValue isnt '') {
+      var first = this.elements[2];
+      this.source.add(first.expr.elements[0].walk(state));
+
+      first.elements[1].elements.each(|node| {
+        this.source.add(', ');
+        this.source.add(node.expr.elements[0].walk(state));
+      }.bind(this));
     }
 
-    var first = this.elements[2];
-    var acc = [first.expr.elements[0].toJS(state)];
-
-    first.elements[1].elements.each |node| {
-      acc.push(node.expr.elements[0].toJS(state));
-    };
-
-    return "[" + acc.join(', ') + "]";
+    this.source.add(']');
   }
 };
 

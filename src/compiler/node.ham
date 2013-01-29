@@ -24,7 +24,7 @@ class Node {
     this.column = this.offset - (parsed.lastIndexOf('\n') or 0);
 
     this.source = new sourceMap.SourceNode(this.line, this.column, state.filename);
-    return this.serialize(state);
+    return this.serialize(state) or this.source;
   },
 
   compile: |data| {

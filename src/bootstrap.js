@@ -50,9 +50,14 @@ lang.Parser.HamFile = ASTNode.extend({
         ret.push(el.statement.toJS(state, indent+1));
     });
 
-    return {
-      body: ret.join('\n')
-    };
+    // read the template from cache or fs
+    var tmpl = template_cache[this.template];
+    if(tmpl === undefined) {
+      tmpl = _.template(fs.readFileSync(__dirname + '/compiler/templates/' + this.template + '.ejs', 'utf8'));
+      template_cache[this.template] = tmpl;
+    }
+
+    return tmpl({}) +  ret.join('\n') + '})();';
   }
 });
 
@@ -78,7 +83,6 @@ lang.Parser.FunctionalBlock = {
 
 lang.Parser.ObjectNew = ASTNode.extend({
   serialize: function(state) {
-    console.log(this);
     return 'new ' + this.expr.toJS(state);
   }
 });

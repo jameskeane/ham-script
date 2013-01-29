@@ -3,26 +3,30 @@ var ASTNode = require("./node");
 
 //@export
 class ClassDef extends ASTNode {
-  template: "class",
-
   serialize: |state| {
-    var parent:string = this.elements[4].ident.toJS(state) or "Object";
-    return {
-      name: this.ident.toJS(state),
-      parent: parent,
-      body: this.elements[5].toJS(state)
-    };
+    var parent:string = this.elements[4].ident.walk(state) or "Object";
+    var body = this.elements[5].walk(state);
+    var name = this.ident.walk(state);
+
+    this.source.add('var ');
+    this.source.add(name);
+    this.source.add(' = ');
+    this.source.add(parent);
+    this.source.add('.extend(');
+    this.source.add(body);
+    this.source.add(');');
   }
 };
 
 //@export
 class PrototypeExpander extends ASTNode {
   serialize: |state| {
-    var ret:string = this.ident.toJS(state);
+    this.source.add(this.ident.walk(state));
+
     if(this.elements[1].ident_p) {
-      ret += ".prototype." + this.elements[1].ident_p.textValue;
+      this.source.add('.prototype.');
+      this.source.add(this.elements[1].ident_p.textValue);
     }
-    return ret;
   }
 };
 

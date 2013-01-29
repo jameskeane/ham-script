@@ -11,91 +11,78 @@ lang.Parser.HamFile = new ASTNode.extend({
   template: 'prologue',
 
   serialize: function(state) {
-    var indent = 0;
-
-    var ret = [];
+    this.source.add(this.compile({}));
 
     this.elements[1].elements.forEach(function(el) {
-        ret.push(el.statement.toJS(state, indent+1));
-    });
+        this.source.add(el.statement.walk(state));
+    }.bind(this));
 
-    return {
-      body: ret.join('\n')
-    };
+    this.source.add('})();');
   }
 });
 
 lang.Parser.ObjectNew = ASTNode.extend({
   serialize: function(state) {
-    return 'new ' + this.expr.toJS(state);
+    this.source.add('new ');
+    this.source.add(this.expr.walk(state));
   }
 });
 
-lang.Parser.FunctionalBlock = {
+lang.Parser.FunctionalBlock = ASTNode.extend({
   serialize: function(state) {
-    var stmts = [];
-
     if(this.expr) {
-      stmts.push('return ' + this.expr.toJS(state) + ';');
+      this.source.add('return ');
+      this.source.add(this.expr.walk(state));
+      this.source.add(';');
     } else {
       this.elements[2].elements.forEach(function(el) {
-        stmts.push(el.statement.toJS(state));
-      });
+        this.source.add(el.statement.walk(state));
+      }.bind(this));
     }
-
-    return stmts;
-  },
-
-  toJS: function(state, indent) {
-    return this.serialize(state).join('\n');
   }
-}
+});
 
 lang.Parser.IfStmt = ASTNode.extend({
-  template: 'if_stmt',
-
   serialize: function(state) {
-    var condition = this.expr.toJS(state);
-    var main_block = this.block.toJS(state);
+    var condition = this.expr.walk(state);
+    var main_block = this.block.walk(state);
     var elifs = [];
 
     // generate the elifs
     this.elements[9].elements.forEach(function(el) {
-      elifs.push([el.expr.toJS(state), el.block.toJS(state)]);
-    });
+      elifs.push([el.expr.walk(state), el.block.walk(state)]);
+    }.bind(this));
 
-    var elsestate = this.elements[10].block ? this.elements[10].block.toJS(state) : '';
+    var elsestate = this.elements[10].block ? this.elements[10].block.walk(state) : '';
 
-    return {
-      cond: condition,
-      main_block: main_block,
-      elifs: elifs,
-      elsestate: elsestate
-    };
+    // create the source
+    this.source.add('if('); this.source.add(condition); this.source.add('){');
+    this.source.add(main_block);
+    elifs.forEach(function(elif) {
+      this.source.add('} else if('); this.source.add(elif[0]); this.source.add('){');
+        this.source.add(elif[1]);
+    }.bind(this));
+    if(elsestate !== '') {
+      this.source.add('} else {');
+        this.source.add(elsestate);
+    }
+    this.source.add('}');
   }
 });
 
-lang.Parser.Block = {
+lang.Parser.Block = ASTNode.extend({
   serialize: function(state) {
-    var stmts = [];
-
     this.elements[2].elements.forEach(function(el) {
-      stmts.push(el.statement.toJS(state));
-    });
-
-    return stmts;
-  },
-
-  toJS: function(state, indent) {
-    return this.serialize(state).join('\n');
+      this.source.add(el.statement.walk(state));
+    }.bind(this));
   }
-}
+});
 
-lang.Parser.Import = {
-  toJS: function(state) {
+lang.Parser.Import = ASTNode.extend({
+  serialize: function(state) {
     return "";
   }
-}
+});
 
 lang.Parser.ArrayAccess = array.ArrayAccess;
 lang.Parser.ArraySlice = array.ArraySlice;
@@ -109,176 +96,173 @@ lang.Parser.FunctionInvocation = functional.FunctionInvocation;
 lang.Parser.PrototypeExpander = oop.PrototypeExpander;
 lang.Parser.ClassDef = oop.ClassDef;
 
-lang.Parser.ExprList = {
-  toJS: function(state) {
-    var ret = [this.expr.toJS(state)];
+lang.Parser.ExprList = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.expr.walk(state));
 
     this.elements[1].elements.forEach(function(el) {
-      ret.push(el.expr.toJS(state));
-    });
-    
-    return ret.join(', ');
+      this.source.add(el.expr.walk(state));
+    }.bind(this));
   }
-}
+});
 
-lang.Parser.ValueAccessor = {
-  toJS: function(state) {
-    // TODO
-    var ret = this.value.toJS(state);
+lang.Parser.ValueAccessor = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.value.walk(state));
 
     if(this.elements[1].textValue !== '') {
       this.elements[1].elements.forEach(function(el) {
         if(el.value) {
-          ret += '.' + el.value.toJS(state);
+          this.source.add('.');
+          this.source.add(el.value.walk(state));
         } else {
-          ret += el.accessor.toJS(state);
+          this.source.add(el.accessor.walk(state));
         }
-      });
+      }.bind(this));
     }
-
-    return ret;
   }
-}
+});
 
-lang.Parser.Identifier = {
+lang.Parser.Identifier = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.textValue);
+  }
+});
+
+lang.Parser.ExprStmt = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.elements[0].walk(state));
+    this.source.add(';');
+  }
+});
+
+
+lang.Parser.Type = ASTNode.extend({
   val: function() {
 
   },
   toJS: function(state, indent) {
     return this.textValue;
   }
-}
+});
 
-lang.Parser.ExprStmt = {
-  toJS: function(state, indent) {
-    return this.elements[0].toJS(state, indent+1) + ';';
-  }
-}
-
-
-lang.Parser.Type = {
-  val: function() {
-
-  },
-  toJS: function(state, indent) {
-    return this.textValue;
-  }
-}
-
-lang.Parser.ReturnStmt = {
-  toJS: function(state, indent) {
-    var ret = "return";
-    if(this.expr.toJS) {
-      ret += " " + this.expr.toJS(state);
+lang.Parser.ReturnStmt = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add('return');
+    if(this.expr.walk) {
+      this.source.add(' ');
+      this.source.add(this.expr.walk(state));
     }
-    ret += ';';
-    return ret;
+    this.source.add(';');
   }
-}
+});
 
-lang.Parser.ParenExpression = {
-  toJS: function(state) {
-    return "(" + this.expr.toJS(state) + ")";
+lang.Parser.ParenExpression = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add('(');
+    this.source.add(this.expr.walk(state));
+    this.source.add(')');
   }
-}
+});
 
-lang.Parser.Expression = {
+lang.Parser.Expression = ASTNode.extend({
   translate: {
     'or': '||',
     'is': '===',
     'isnt': '!=='
   },
 
-  toJS: function(state, indent) {
-    var ret = this.value_acs.toJS(state, indent+1);
+  serialize: function(state) {
+    this.source.add(this.value_acs.walk(state));
 
     this.elements[1].elements.forEach(function(el) {      
       var op = this.translate[el.binaryop.textValue];
       if(op === undefined)
         op = el.binaryop.textValue;
 
-      ret += ' ' + op + ' ' + el.value_acs.toJS(state);
+      this.source.add(' ' + op + ' ');
+      this.source.add(el.value_acs.walk(state));
     }.bind(this));
-
-    return ret;
   }
-}
+});
 
-lang.Parser.Assignment = {
-  toJS: function(state, indent) {
-    return this.ident.toJS(state, indent+1);
+lang.Parser.Assignment = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.ident.walk(state));
   }
-}
+});
 
-lang.Parser.VariableDef = {
-  toJS: function(state, indent) {
-    var ident = this.ident.toJS(state, indent+1);
+lang.Parser.VariableDef = ASTNode.extend({
+  serialize: function(state) {
+    var ident = this.ident.walk(state);
     var has_type = this.elements[3].type !== undefined;
 
-    var value = this.elements[4].expr ? this.elements[4].expr.toJS(state, indent+1) : "null";
-    return "var " + ident + " = " + value + ";";
-  }
-}
+    var value = this.elements[4].expr ? this.elements[4].expr.walk(state) : "null";
 
-lang.Parser.ObjectNode = {
+    this.source.add('var ');
+    this.source.add(ident);
+    this.source.add(' = ');
+    this.source.add(value);
+    this.source.add(';');
+  }
+});
+
+lang.Parser.ObjectNode = ASTNode.extend({
   serialize: function(state) {
-    var acc = {};
+    this.source.add('{');
 
     var first = this.elements[1].elements[0];
-    if(!first || first.textValue === '') return acc;
+    if(first && first.textValue !== '') {
+      var acc = {};
+      var name = first.name.val ? first.name.val() : first.name.textValue;
 
-    var name = first.name.val ? first.name.val() : first.name.textValue;
-    acc[name] = first.expr.toJS(state);
+      this.source.add(name + ': ');
+      this.source.add(first.expr.walk(state));
 
-    this.elements[1].elements[1].elements.forEach(function(node) {
-      if(node.textValue === '') return;
+      this.elements[1].elements[1].elements.forEach(function(node) {
+        if(node.textValue === '') return;
 
-      var val = node.object_p.name.val ? node.object_p.name.val() : node.object_p.name.textValue;
-      acc[val] = node.object_p.expr.toJS(state);
-    });
+        var val = node.object_p.name.val ? node.object_p.name.val() : node.object_p.name.textValue;
 
-    return acc;
-  },
+        this.source.add(', ' + val + ':');
+        this.source.add(node.object_p.expr.walk(state));
+      }.bind(this));
+    }
 
-  toJS: function(state, indent) {
-    var properties = this.serialize(state);
-    var ret = [];
-    _.each(properties, function(value, key) {
-      ret.push(key + ': ' + value);
-    });
-
-    return "{\n" + ret.join(',\n') + "\n}";
+    this.source.add('}');
   }
-}
+});
 
-lang.Parser.StringNode = {
+lang.Parser.StringNode = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.elements[0].textValue);
+    this.source.add(this.elements[1].textValue);
+    this.source.add(this.elements[2].textValue);
+  },
   val: function() {
     return this.elements[1].textValue;
-  },
-  toJS: function(state, indent) {
-    return this.textValue;
   }
-}
+});
 
-lang.Parser.NumberNode = {
+lang.Parser.NumberNode = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.textValue);
+  },
   val: function() {
     return parseFloat(this.textValue, 10);
-  },
-  toJS: function(state, indent) {
-    return this.textValue;
   }
-}
+});
 
-lang.Parser.SpecialNode = {
+lang.Parser.SpecialNode = ASTNode.extend({
+  serialize: function(state) {
+    this.source.add(this.textValue);
+  },
   val: function() {
     if(this.textValue === 'true')  return true;
     if(this.textValue === 'false') return false;
     if(this.textValue === 'null')  return null;
-  },
-  toJS: function(state, indent) {
-    return this.textValue;
   }
-}
+});
 
 module.exports = lang;
 

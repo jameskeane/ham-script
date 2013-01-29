@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var ASTNode = require('./node');
 
 class ListComprehension extends ASTNode {
@@ -10,7 +11,7 @@ class ListComprehension extends ASTNode {
 
     var first = this.elements[6];
     params.push(first.ident_p.textValue);
-    providers.push(first.expr.toJS(state));
+    providers.push(first.expr.walk(state));
 
     this.elements[7:-2].each |p| {
       if(p.textValue is '') { return; };
@@ -19,20 +20,27 @@ class ListComprehension extends ASTNode {
       if(p.ident_p is undefined or p.expr is undefined) { return;  };
       
       params.push(p.ident_p.textValue);
-      providers.push(p.expr.toJS(state));
+      providers.push(p.expr.walk(state));
     };
 
-    return {
-      params: params,
-      providers: providers,
-      body: this.expr.toJS(state)
-    };
+    this.source.add('(function() { var tmp = [];');
+    _.each(params, |p, i| { 
+      this.source.add('var ' + p + '=');
+      this.source.add(providers[i]);
+      this.source.add(';');
+    }.bind(this));
+
+    this.source.add('var evaluator = function('+params.join(', ')+') { return ');
+    this.source.add(this.expr.walk(state));
+    this.source.add(';};');
+
+    this.source.add('for(var i = 0; i < Math.min('+params.join('.length, ') + '.length); i++) {');
+    this.source.add('tmp.push(evaluator('+params.join('[i], ') + '[i]));');
+    this.source.add('} return tmp; })()');
   }
 };
 
-class Lambda extends ASTNode {
-  template: 'lambda',
-  
+class Lambda extends ASTNode {  
   serialize: |state| {
     // get the params
     var params = [];
@@ -49,24 +57,25 @@ class Lambda extends ASTNode {
       }
     }
 
-    return {
-      params: params,
-      body: this.funblock.toJS(state)
-    };
+    this.source.add('function(');
+    this.source.add(params.join(', '));
+    this.source.add(') {');
+    this.source.add(this.funblock.walk(state));
+    this.source.add('}');
   }
 };
 
 class FunctionInvocation extends ASTNode {
   serialize: |state| {
+    this.source.add('(');
+
     if(this.lambda) {
-      return "(" + this.lambda.toJS(state) + ")";
+      this.source.add(this.lambda.walk(state));
+    } else if(this.elements[2].textValue isnt '') {
+      this.source.add(this.elements[2].walk(state));
     }
 
-    if(this.elements[2].textValue is '') {
-      return "()";
-    }
-
-    return "(" + this.elements[2].toJS(state) + ")";
+    this.source.add(')');
   }
 };
 
