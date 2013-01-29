@@ -18,7 +18,7 @@ grammar ham
   binaryop  <- "or" / "isnt" / "is" / "+=" / "*=" / "/=" / "-=" / "%=" / "==" / "!=" / "**" / [-+=*\^/%]
 
   value_acs <- value ( (_ "." _ value) / (_ accessor) )* <ValueAccessor>
-  value     <- number / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp
+  value     <- number / new_obj / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp
   chain_pp  <- "(" _ expr _ ")" <ParenExpression>
   accessor  <- arrayslc / arrayacs / funcall
 
@@ -26,6 +26,7 @@ grammar ham
 
   expr_list <- expr ( _ "," _ expr)* <ExprList>
   
+  new_obj   <- "new" _ expr _ <ObjectNew>
   array     <- "[" _ expr_list? _ "]" <ArrayNode>
   array_rng <- "[" _ start:(integer / ident) ".." end:(integer / ident) _ "]" <ArrayRange>
 

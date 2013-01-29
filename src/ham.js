@@ -10,8 +10,8 @@ var lang = require('./lang'),
 lang.Parser.HamFile = new ASTNode.extend({
   template: 'prologue',
 
-  serialize: function() {
-    var state = {}, indent = 0;
+  serialize: function(state) {
+    var indent = 0;
 
     var ret = [];
 
@@ -22,6 +22,12 @@ lang.Parser.HamFile = new ASTNode.extend({
     return {
       body: ret.join('\n')
     };
+  }
+});
+
+lang.Parser.ObjectNew = ASTNode.extend({
+  serialize: function(state) {
+    return 'new ' + this.expr.toJS(state);
   }
 });
 
@@ -41,7 +47,7 @@ lang.Parser.FunctionalBlock = {
   },
 
   toJS: function(state, indent) {
-    return this.serialize().join('\n');
+    return this.serialize(state).join('\n');
   }
 }
 
@@ -81,7 +87,7 @@ lang.Parser.Block = {
   },
 
   toJS: function(state, indent) {
-    return this.serialize().join('\n');
+    return this.serialize(state).join('\n');
   }
 }
 
@@ -222,7 +228,7 @@ lang.Parser.ObjectNode = {
     if(!first || first.textValue === '') return acc;
 
     var name = first.name.val ? first.name.val() : first.name.textValue;
-    acc[name] = first.expr.toJS();
+    acc[name] = first.expr.toJS(state);
 
     this.elements[1].elements[1].elements.forEach(function(node) {
       if(node.textValue === '') return;

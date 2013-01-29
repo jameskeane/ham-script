@@ -41,8 +41,8 @@ ASTNode.extend = function(o) {
 lang.Parser.HamFile = ASTNode.extend({
   template: 'prologue',
 
-  serialize: function() {
-    var state = {}, indent = 0;
+  serialize: function(state) {
+    var indent = 0;
 
     var ret = [];
 
@@ -72,9 +72,16 @@ lang.Parser.FunctionalBlock = {
   },
 
   toJS: function(state, indent) {
-    return this.serialize().join('\n');
+    return this.serialize(state).join('\n');
   }
 }
+
+lang.Parser.ObjectNew = ASTNode.extend({
+  serialize: function(state) {
+    console.log(this);
+    return 'new ' + this.expr.toJS(state);
+  }
+});
 
 lang.Parser.IfStmt = ASTNode.extend({
   template: 'if_stmt',
@@ -112,7 +119,7 @@ lang.Parser.Block = {
   },
 
   toJS: function(state, indent) {
-    return this.serialize().join('\n');
+    return this.serialize(state).join('\n');
   }
 }
 
@@ -124,7 +131,7 @@ lang.Parser.Import = {
 
 lang.Parser.ArrayAccess = ASTNode.extend({
   toJS: function(state) {
-    var accessor = this.elements[2].toJS();
+    var accessor = this.elements[2].toJS(state);
 
     return '[' + accessor + ']';
   }
@@ -191,7 +198,7 @@ lang.Parser.ListComprehension = ASTNode.extend({
 
     var first = this.elements[6];
     params.push(first.ident_p.textValue);
-    providers.push(first.expr.toJS());
+    providers.push(first.expr.toJS(state));
 
     this.elements.slice(7, -2).forEach(function(p) {
       if(p.textValue === '') return;
@@ -199,13 +206,13 @@ lang.Parser.ListComprehension = ASTNode.extend({
       if(p.ident_p === undefined || p.expr == undefined) return;
       
       params.push(p.ident_p.textValue);
-      providers.push(p.expr.toJS());
+      providers.push(p.expr.toJS(state));
     });
 
     return {
       params: params,
       providers: providers,
-      body: this.expr.toJS()
+      body: this.expr.toJS(state)
     }
   }
 });
@@ -266,8 +273,8 @@ lang.Parser.ClassDef = ASTNode.extend({
 });
 
 lang.Parser.PrototypeExpander = ASTNode.extend({
-  serialize: function() {
-    var ret = this.ident.toJS();
+  serialize: function(state) {
+    var ret = this.ident.toJS(state);
     if(this.elements[1].ident_p)  {
       ret += '.prototype.' + this.elements[1].ident_p.textValue;
     }
@@ -394,7 +401,7 @@ lang.Parser.ObjectNode = {
     if(!first || first.textValue === '') return acc;
 
     var name = first.name.val ? first.name.val() : first.name.textValue;
-    acc[name] = first.expr.toJS();
+    acc[name] = first.expr.toJS(state);
 
     this.elements[1].elements[1].elements.forEach(function(node) {
       if(node.textValue === '') return;

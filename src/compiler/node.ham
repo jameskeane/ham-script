@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var fs = require('fs');
+var sourceMap = require('source-map');
 
 // we will cache all compiled templates, so we don't have to read and recompile them
 var template_cache = {};
@@ -9,6 +10,32 @@ class Node {
 
   serialize: {
     return {};
+  },
+
+  walk: |state| {
+    // TODO: this is slow as shit, modify Canopy to add line and column
+    var parsed = state.source.substr(0, this.offset);
+    var match = parsed.match(new RegExp("\n", "g"));
+    if(match) {
+      this.line = match.length;
+    } else {
+      this.line = 0;
+    }
+    this.column = this.offset - (parsed.lastIndexOf('\n') or 0);
+
+    this.source = new sourceMap.SourceNode(this.line, this.column, state.filename);
+    return this.serialize(state);
+  },
+
+  compile: |data| {
+    // read the template from cache or fs
+    var tmpl = template_cache[this.template];
+    if(tmpl == undefined) {
+      tmpl = _.template(fs.readFileSync(__dirname + '/templates/' + this.template + '.ejs', 'utf8'));
+      template_cache[this.template] = tmpl;
+    }
+
+    return tmpl(data);
   },
 
   toJS: |state| {

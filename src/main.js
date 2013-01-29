@@ -11,8 +11,9 @@ var fs = require('fs'),
 require.extensions['.ham'] = function(module, filename) {
   var compiler = ham || bootstrap;
 
-  var js = compiler.parse(fs.readFileSync(filename, 'utf8'));
-  module._compile(js.toJS(), filename);
+  var source = fs.readFileSync(filename, 'utf8');
+  var js = compiler.parse(source);
+  module._compile(js.toJS({filename: filename, source: source}), filename);
 };
 
 // first compile the ham compiler

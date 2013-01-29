@@ -10,7 +10,7 @@ class ListComprehension extends ASTNode {
 
     var first = this.elements[6];
     params.push(first.ident_p.textValue);
-    providers.push(first.expr.toJS());
+    providers.push(first.expr.toJS(state));
 
     this.elements[7:-2].each |p| {
       if(p.textValue is '') { return; };
@@ -19,13 +19,13 @@ class ListComprehension extends ASTNode {
       if(p.ident_p is undefined or p.expr is undefined) { return;  };
       
       params.push(p.ident_p.textValue);
-      providers.push(p.expr.toJS());
+      providers.push(p.expr.toJS(state));
     };
 
     return {
       params: params,
       providers: providers,
-      body: this.expr.toJS()
+      body: this.expr.toJS(state)
     };
   }
 };

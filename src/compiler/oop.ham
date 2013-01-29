@@ -17,8 +17,8 @@ class ClassDef extends ASTNode {
 
 //@export
 class PrototypeExpander extends ASTNode {
-  serialize: {
-    var ret:string = this.ident.toJS();
+  serialize: |state| {
+    var ret:string = this.ident.toJS(state);
     if(this.elements[1].ident_p) {
       ret += ".prototype." + this.elements[1].ident_p.textValue;
     }
