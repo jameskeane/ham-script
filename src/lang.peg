@@ -1,5 +1,5 @@
-grammar harp
-  root      <- _ (_ statement _)* <HarpFile>
+grammar ham
+  root      <- _ (_ statement _)* <HamFile>
   funblock  <- ("{" _ expr _ "}" / "{" _ (_ statement _)* "}") <FunctionalBlock> 
   block     <- "{" _ (_ statement _)* "}" <Block> 
 

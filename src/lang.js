@@ -136,7 +136,7 @@
       if (elements0) {
         this._offset = index1;
         var klass2 = this.constructor.SyntaxNode;
-        var type2 = find(this.constructor, "HarpFile");
+        var type2 = find(this.constructor, "HamFile");
         address0 = new klass2(text0, this._offset, elements0, labelled0);
         if (typeof type2 === "object") {
           extend(address0, type2);
@@ -7754,9 +7754,9 @@
     
   } else {
     var namespace = this;
-    harp = Grammar;
-    harpParser = Parser;
-    harpParser.formatError = formatError;
+    ham = Grammar;
+    hamParser = Parser;
+    hamParser.formatError = formatError;
   }
 })();
 

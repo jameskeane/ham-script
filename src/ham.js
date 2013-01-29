@@ -7,7 +7,7 @@ var lang = require('./lang'),
     functional = require('./compiler/functional'),
     oop        = require('./compiler/oop');
 
-lang.Parser.HarpFile = ASTNode.extend({
+lang.Parser.HamFile = ASTNode.extend({
   template: 'prologue',
 
   serialize: function() {

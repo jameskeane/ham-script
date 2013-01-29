@@ -1,22 +1,22 @@
-Harp -- an altJS language
+Ham -- an altJS language
 =========================
-Harp is another altJS language, similar to [CoffeeScript](http://coffeescript.org/).  What makes Harp different is that it is written as a PEG,
-and does not have significant whitespace.  Harp looks very similar to Javascript at first, but offers (hopefully)
+Ham is another altJS language, similar to [CoffeeScript](http://coffeescript.org/).  What makes Ham different is that it is written as a PEG,
+and does not have significant whitespace.  Ham looks very similar to Javascript at first, but offers (hopefully)
 many useful features.
 
-Harp was written using the [Canopy](http://canopy.jcoglan.com/) PEG Parser Generator, and Javascript.  I am
-currently working towards self-hosting Harp but it is not quite there yet.
+Ham was written using the [Canopy](http://canopy.jcoglan.com/) PEG Parser Generator, and Javascript.  I am
+currently working towards self-hosting Ham but it is not quite there yet.
 
-Harp is written in an MVC style manner, where model is the AST, view is the javascript translations 
-(using ejs templates), and the controller is the tree translators.  This makes Harp extremely easy to hack on, and fun!
+Ham is written in an MVC style manner, where model is the AST, view is the javascript translations 
+(using ejs templates), and the controller is the tree translators.  This makes Ham extremely easy to hack on, and fun!
 
 Syntax
 ------
-Since Harp is extremely similar to Javascript, you can get almost perfect syntax hilighting for free by using the Javascript
+Since Ham is extremely similar to Javascript, you can get almost perfect syntax hilighting for free by using the Javascript
 hilighters, which is a pretty neat side effect.
 
 ### Array Ranges and Slices
-Harp supports [python style](http://stackoverflow.com/a/509295) list ranges and slicing.
+Ham supports [python style](http://stackoverflow.com/a/509295) list ranges and slicing.
 
 ```Javascript
 var range = [1..5];
@@ -28,13 +28,13 @@ range[::2] === [1, 3, 5];     // true
 ```
 
 ### List Comprehensions
-Harp supports list comprehensions, similar in style to Haskell.
+Ham supports list comprehensions, similar in style to Haskell.
 ```Javascript
 var cross = [x*y | x <- range, y <- range[::-1]];
 ```
 
 ### Friendly Lambda's
-Harp makes it fun to use lambda's.
+Ham makes it fun to use lambda's.
 ```Javascript
 var sum = |x, y| { return x + y; }
 
@@ -61,7 +61,7 @@ class Hamburger extends MeatMeal {
    eat: { console.log('om nom nom'); }
 };
 
-// Harp just uses Backbone style .extends() for inheritence, so this translates easily to:
+// Ham just uses Backbone style .extends() for inheritence, so this translates easily to:
 // var Hamburger = MeatMeal.extend({ ... });
 ```
 
@@ -91,7 +91,7 @@ import Backbone, _ from 'vendor/backbone'; // would work great for browser, but 
 ```
 
 ### Decorators
-I also sometimes finding myself with a need for python style Decorators, so Harp will have some form of them.
+I also sometimes finding myself with a need for python style Decorators, so Ham will have some form of them.
 ```Javascript
 @watch(notify_change)
 var the_ghost_man = 3;
@@ -106,4 +106,5 @@ largely with the combination of ranges and list comprehensions with `.each`.
 
 Usage
 -----
-Clone this repo, write some Harp code, and do `./bin/harp <filename>' to evaluate it.
+`npm install -g harm`
+Then write some Ham.js code, and `harm <filename>` to run it.

@@ -1,26 +1,29 @@
 {
-  "name": "harp",
+  "name": "ham-script",
   "version": "1.0.0",
-  "description": "Better Javascript",
-  "main": "harp.js",
+  "description": "A Hammier Javascript",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/canopy/bin/canopy ./src/lang.peg"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jameskeane/harp.git"
+    "url": "https://github.com/jameskeane/ham-script.git"
+  },
+  "main": "src/ham.js",
+  "bin": {
+    "ham": "src/main.js"
   },
   "keywords": [
-    "harp",
+    "ham",
     "peg",
     "javascript"
   ],
   "author": "James Keane",
   "license": "BSD",
-  "devDependencies": {
-    "canopy": "0.2.0"
-  },
   "dependencies": {
-    "underscore": "~1.4.3"
+    "canopy": "0.2.0",
+    "underscore": "~1.4.3",
+    "source-map-support": "0.1.0"
   }
 }
