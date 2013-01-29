@@ -1,6 +1,6 @@
 grammar ham
   root      <- _ (_ statement _)* <HamFile>
-  funblock  <- ("{" _ expr _ "}" / "{" _ (_ statement _)* "}") <FunctionalBlock> 
+  funblock  <- ("{" _ (_ statement _)* "}" / "{" _ expr _ "}") <FunctionalBlock> 
   block     <- "{" _ (_ statement _)* "}" <Block> 
 
   statement <- variable / class_def / import / return / if_stmt / exprstmt
@@ -9,13 +9,13 @@ grammar ham
   import    <- "import" _ ident (_ "," _ ident)* _ "from" _ string _ ";" <Import>
   class_def <- "class" _ ident _ ("extends" _ ident _)? object _ ";" <ClassDef>
   variable  <- "var" _ ident (":" _ type)? (_ "=" _ expr)? _ ";" <VariableDef>
-  return    <- "return" _ expr _ ";" <ReturnStmt>
+  return    <- "return" _ expr? _ ";" <ReturnStmt>
   if_stmt   <- "if" _ "(" _ expr _ ")" _ block
                (_ "else" _ "if" _ "(" _ expr _ ")" _ block)*
                (_ "else" _ block)? _ ";"? <IfStmt>
 
   expr      <- value_acs ( _ binaryop _ value_acs )* <Expression>
-  binaryop  <- "or" / "is" / "isnt" / "+=" / "*=" / "/=" / "-=" / "%=" / "==" / "!=" / "**" / [-+=*\^/%]
+  binaryop  <- "or" / "isnt" / "is" / "+=" / "*=" / "/=" / "-=" / "%=" / "==" / "!=" / "**" / [-+=*\^/%]
 
   value_acs <- value ( (_ "." _ value) / (_ accessor) )* <ValueAccessor>
   value     <- number / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp

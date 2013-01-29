@@ -173,7 +173,9 @@ lang.Parser.ParenExpression = {
 
 lang.Parser.Expression = {
   translate: {
-    'or': '||'
+    'or': '||',
+    'is': '===',
+    'isnt': '!=='
   },
 
   toJS: function(state, indent) {

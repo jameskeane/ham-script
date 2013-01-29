@@ -1,9 +1,9 @@
 var ASTNode = require('./node');
 
-module.exports.ListComprehension = ASTNode.extend({
+class ListComprehension extends ASTNode {
   template: 'comprehension',
 
-  serialize: function(state) {
+  serialize: |state| {
     // collect params and providers
     var params = [];
     var providers = [];
@@ -12,59 +12,64 @@ module.exports.ListComprehension = ASTNode.extend({
     params.push(first.ident_p.textValue);
     providers.push(first.expr.toJS());
 
-    this.elements.slice(7, -2).forEach(function(p) {
-      if(p.textValue === '') return;
+    this.elements[7:-2].each |p| {
+      if(p.textValue is '') { return; };
+
       p = p.elements[0].elements[3];
-      if(p.ident_p === undefined || p.expr == undefined) return;
+      if(p.ident_p is undefined or p.expr is undefined) { return;  };
       
       params.push(p.ident_p.textValue);
       providers.push(p.expr.toJS());
-    });
+    };
 
     return {
       params: params,
       providers: providers,
       body: this.expr.toJS()
-    }
+    };
   }
-});
+};
 
-module.exports.Lambda = ASTNode.extend({
+class Lambda extends ASTNode {
   template: 'lambda',
   
-  serialize: function(state, indent) {
+  serialize: |state| {
     // get the params
     var params = [];
 
     // Is it a no param list lambda?
-    if(this.elements[0].textValue !== '') {
+    if(this.elements[0].textValue isnt '') {
       var first = this.elements[0].elements[2].ident_p;
-      if(first !== undefined) {
+      if(first isnt undefined) {
         params.push(first.textValue);
-        var it = this.elements[0].elements[2].elements[1];
-        it.forEach(function(el) {
+        var it = this.elements[0].elements[2].elements[1].elements;
+        it.each |el| {
           params.push(el.ident_p.elements[0].textValue);
-        });
+        };
       }
     }
 
     return {
       params: params,
       body: this.funblock.toJS(state)
-    }
+    };
   }
-});
+};
 
-module.exports.FunctionInvocation = ASTNode.extend({
-  serialize: function(state) {
+class FunctionInvocation extends ASTNode {
+  serialize: |state| {
     if(this.lambda) {
       return "(" + this.lambda.toJS(state) + ")";
     }
 
-    if(this.elements[2].textValue === '') {
+    if(this.elements[2].textValue is '') {
       return "()";
     }
 
     return "(" + this.elements[2].toJS(state) + ")";
   }
-});
+};
+
+module.exports.ListComprehension = ListComprehension;
+module.exports.Lambda = Lambda;
+module.exports.FunctionInvocation = FunctionInvocation;
