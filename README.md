@@ -61,7 +61,7 @@ class Hamburger extends MeatMeal {
    eat: { console.log('om nom nom'); }
 };
 
-// Ham just uses Backbone style .extends() for inheritence, so this translates easily to:
+// Ham just uses Backbone style .extend() for inheritence, so this translates easily to:
 // var Hamburger = MeatMeal.extend({ ... });
 ```
 
@@ -91,7 +91,7 @@ import Backbone, _ from 'vendor/backbone'; // would work great for browser, but 
 ```
 
 ### Decorators
-I also sometimes finding myself with a need for python style Decorators, so Ham will have some form of them.
+I also sometimes find myself with a need for python style Decorators, so Ham will have some form of them.
 ```Javascript
 @watch(notify_change)
 var the_ghost_man = 3;
