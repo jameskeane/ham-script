@@ -1,6 +1,6 @@
 {
-  "name": "ham-script",
-  "version": "1.0.0",
+  "name": "ham",
+  "version": "0.0.5",
   "description": "A Hammier Javascript",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

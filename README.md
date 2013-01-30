@@ -106,5 +106,5 @@ largely with the combination of ranges and list comprehensions with `.each`.
 
 Usage
 -----
-`npm install -g ham-script`
+`npm install -g ham`
 Then write some Ham.js code, and `ham <filename>` to run it.
