@@ -4,41 +4,44 @@
 var fs = require('fs'),
     path = require('path'),
     vm = require('vm'),
-    bootstrap = require('./bootstrap'),
     sourcemap = require('source-map'),
-    ham = null;
+    argv = require('optimist').argv,
+    ham = require('./bootstrap');
 
-// support source maps
+// support source map'd stack traces
 var source_maps = require('./stack_trace').maps;
-
-var compile = function(filename, withSM) {
-  var compiler = ham || bootstrap;
-
-  var source = fs.readFileSync(filename, 'utf8');
-  var ast = compiler.parse(source);
-
-  if(ast.walk) {
-    var sourceGenerator = ast.walk({filename: filename, source: source});
-    var sm = sourceGenerator.toStringWithSourceMap({file: filename});
-
-    source_maps[filename] = new sourcemap.SourceMapConsumer(sm.map.toString());
-
-    if(withSM) return sm;
-    return sm.code;
-  } else {
-    return ast.toJS({});
-  }
-}
 
 // hook into the require() system
 require.extensions['.ham'] = function(module, filename) {
-  module._compile(compile(filename), filename);
+  var mod = ham.compile(filename);
+  var source = mod;
+
+  if(typeof mod !== 'string') {
+    source = mod.code;
+    source_maps[filename] = new sourcemap.SourceMapConsumer(mod.map.toString());
+  }
+
+  module._compile(source, filename);
 };
 
-
-// first compile the ham compiler
+// first compile the ham compiler with the bootstrap
 ham = require('./ham');
 
+// once we are here we know we are bootstrapped
+if(argv.o) {
+  var out_file = argv.o,
+      map_file = out_file + '.map';
+
+  var sm = ham.compile(process.cwd() + '/' + argv._[0]);
+  sm.code += '\n//@ sourceMappingURL=' + map_file;
+
+  fs.writeFile(map_file, sm.map.toString());
+  fs.writeFile(out_file, sm.code);
+} else {
+  require(process.cwd() + '/' + argv._[0]);
+}
+
+/*
 var file = process.cwd() + '/' + process.argv[2]
 if(process.argv[3] == '-o') {
   var sm = compile(file);
@@ -49,3 +52,4 @@ if(process.argv[3] == '-o') {
   // require the file into this scope ... i.e. run it
   require(file);
 }
+*/

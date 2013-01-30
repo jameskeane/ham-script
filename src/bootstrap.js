@@ -457,6 +457,8 @@ lang.Parser.SpecialNode = {
   }
 }
 
-module.exports = lang;
-
-//lang.parse(fs.readFileSync('language.hp', 'utf8')).toJS(state, indent+1);
+module.exports.compile = function(filename) {
+  var source = fs.readFileSync(filename, 'utf8');
+  var ast = lang.parse(source);
+  return ast.toJS({});
+}

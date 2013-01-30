@@ -264,6 +264,12 @@ lang.Parser.SpecialNode = ASTNode.extend({
   }
 });
 
-module.exports = lang;
+module.exports.compile = function(filename) {
+  var source = fs.readFileSync(filename, 'utf8');
+  var ast = lang.parse(source);
 
-//lang.parse(fs.readFileSync('language.hp', 'utf8')).toJS(state, indent+1);
+  var sourceGenerator = ast.walk({filename: filename, source: source});
+  var sm = sourceGenerator.toStringWithSourceMap({file: filename});
+  
+  return sm;
+};
