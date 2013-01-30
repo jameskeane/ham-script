@@ -4,7 +4,7 @@
 [1..10][1::2].each |item| {
   console.log(item);
 };
-
+p;
 [x*x | x <- [1..10]].each |i| {
   console.log(i);
 };

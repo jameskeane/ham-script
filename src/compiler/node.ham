@@ -17,12 +17,11 @@ class Node {
     var parsed = state.source.substr(0, this.offset);
     var match = parsed.match(new RegExp("\n", "g"));
     if(match) {
-      this.line = match.length;
+      this.line = match.length + 1;
     } else {
-      this.line = 0;
+      this.line = 1;
     }
-    this.column = this.offset - (parsed.lastIndexOf('\n') or 0);
-
+    this.column = (this.offset - 1 - parsed.lastIndexOf('\n') or 0);
     this.source = new sourceMap.SourceNode(this.line, this.column, state.filename);
     return this.serialize(state) or this.source;
   },
