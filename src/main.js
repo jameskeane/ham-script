@@ -33,10 +33,13 @@ if(argv.o) {
       map_file = out_file + '.map';
 
   var sm = ham.compile(process.cwd() + '/' + argv._[0]);
-  sm.code += '\n//@ sourceMappingURL=' + map_file;
-
-  fs.writeFile(map_file, sm.map.toString());
-  fs.writeFile(out_file, sm.code);
+  if(out_file === true) {
+    console.log(sm.code);
+  } else {
+    sm.code += '\n//@ sourceMappingURL=' + map_file;
+    fs.writeFile(map_file, sm.map.toString());
+    fs.writeFile(out_file, sm.code);
+  }
 } else {
   require(process.cwd() + '/' + argv._[0]);
 }

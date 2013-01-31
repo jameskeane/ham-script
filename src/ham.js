@@ -101,6 +101,7 @@ lang.Parser.ExprList = ASTNode.extend({
     this.source.add(this.expr.walk(state));
 
     this.elements[1].elements.forEach(function(el) {
+      this.source.add(',');
       this.source.add(el.expr.walk(state));
     }.bind(this));
   }
@@ -172,6 +173,8 @@ lang.Parser.Expression = ASTNode.extend({
     'isnt': '!=='
   },
 
+  overloadable: ['+', '*', '-'],
+
   serialize: function(state) {
     this.source.add(this.value_acs.walk(state));
 
@@ -180,8 +183,14 @@ lang.Parser.Expression = ASTNode.extend({
       if(op === undefined)
         op = el.binaryop.textValue;
 
-      this.source.add(' ' + op + ' ');
-      this.source.add(el.value_acs.walk(state));
+      if(this.overloadable.indexOf(op) === -1) {
+        this.source.add(op);
+        this.source.add(el.value_acs.walk(state));
+      } else {
+        this.source.add('["__op' + op + '"] (');
+        this.source.add(el.value_acs.walk(state));
+        this.source.add(')');
+      }
     }.bind(this));
   }
 });
@@ -216,6 +225,10 @@ lang.Parser.ObjectNode = ASTNode.extend({
       var acc = {};
       var name = first.name.val ? first.name.val() : first.name.textValue;
 
+      if(name.substring(0, 8) === 'operator') {
+        name = '__op' + name.substring(8);
+      }
+
       this.source.add(name + ': ');
       this.source.add(first.expr.walk(state));
 
@@ -223,6 +236,9 @@ lang.Parser.ObjectNode = ASTNode.extend({
         if(node.textValue === '') return;
 
         var val = node.object_p.name.val ? node.object_p.name.val() : node.object_p.name.textValue;
+        if(val.substring(0, 8) === 'operator') {
+          val = '"__op' + val.substring(8) + '"';
+        }
 
         this.source.add(', ' + val + ':');
         this.source.add(node.object_p.expr.walk(state));
@@ -246,7 +262,9 @@ lang.Parser.StringNode = ASTNode.extend({
 
 lang.Parser.NumberNode = ASTNode.extend({
   serialize: function(state) {
+    this.source.add('Number(');
     this.source.add(this.textValue);
+    this.source.add(')');
   },
   val: function() {
     return parseFloat(this.textValue, 10);

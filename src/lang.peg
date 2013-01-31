@@ -31,7 +31,7 @@ grammar ham
   array_rng <- "[" _ start:(integer / ident) ".." end:(integer / ident) _ "]" <ArrayRange>
 
   object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
-  object_p  <- _ name:(string / ident_p) _ ":" _ expr _
+  object_p  <- _ name:(string / obj_name) _ ":" _ expr _
   lambda    <- ("|" _ (ident_p (_ "," _ ident_p)* )? _ "|")? _ funblock <Lambda>
   listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ expr) (_ "," _ (ident_p _ "<-" _ expr))* _ "]" <ListComprehension>
 
@@ -49,6 +49,7 @@ grammar ham
   proto     <- ident ("::" ident_p)? <PrototypeExpander>
   ident     <- ident_p ("." ident_p)* <Identifier>
   ident_p   <- [$_a-zA-Z] [$_a-zA-Z0-9]* 
+  obj_name  <- "operator" [^:]* / ident_p
   special   <- ("true" / "false" / "null") <SpecialNode>
   hex       <- "\\u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
 

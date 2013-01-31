@@ -4,7 +4,10 @@ var ASTNode = require("./node");
 //@export
 class ClassDef extends ASTNode {
   serialize: |state| {
-    var parent:string = this.elements[4].ident.walk(state) or "Object";
+    var parent:string = "Object";
+    if(this.elements[4].ident) {
+      parent = this.elements[4].walk(state);
+    } 
     var body = this.elements[5].walk(state);
     var name = this.ident.walk(state);
 
