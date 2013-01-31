@@ -72,7 +72,7 @@ class Vector {
   x:0, y:0, z:0,
   constructor: |x, y, z| { this.x=x; this.y=y; this.z=z; },
   operator+: |other| { new Vector(this.x+other.x, this.y+other.y, this.z+other.z) }
-}
+};
 
 var v1 = new Vector(1, 2, 3);
 var v2 = new Vector(1, 2, 3);
@@ -91,10 +91,10 @@ Ham wraps numbers in the javascript built-in Number Object and extends it's prot
 ```Javascript
 3.times {
   console.log('hello world!'); 
-}
+};
 ```
 
-What else is comming?
+What else is coming?
 ---------------------
 
 ### Types
