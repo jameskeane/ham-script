@@ -56,10 +56,10 @@ lang.Parser.IfStmt = ASTNode.extend({
     var elsestate = this.elements[10].block ? this.elements[10].block.walk(state) : '';
 
     // create the source
-    this.source.add('if('); this.source.add(condition); this.source.add('){');
+    this.source.add(['if(', condition, '){']);
     this.source.add(main_block);
     elifs.forEach(function(elif) {
-      this.source.add('} else if('); this.source.add(elif[0]); this.source.add('){');
+      this.source.add(['} else if(', elif[0], '){']);
         this.source.add(elif[1]);
     }.bind(this));
     if(elsestate !== '') {

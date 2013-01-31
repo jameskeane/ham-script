@@ -38,7 +38,8 @@
   };
 
   Object.prototype['__op+'] = function(x) { return this + x; }
-  Object.prototype['__op='] = function(x) { return this = x; }
+  Object.prototype['__op*'] = function(x) { return this * x; }
+  Object.prototype['__op-'] = function(x) { return this - x; }
 
 
   Number.prototype.times = function(fn) {
