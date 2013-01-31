@@ -65,10 +65,33 @@ class Hamburger extends MeatMeal {
 // var Hamburger = MeatMeal.extend({ ... });
 ```
 
+### Operator overloading
+Being able to overload the default behaviour of javascript operators is sometimes useful:
+```Javascript
+class Vector {
+  x:0, y:0, z:0,
+  constructor: |x, y, z| { this.x=x; this.y=y; this.z=z; },
+  operator+: |other| { new Vector(this.x+other.x, this.y+other.y, this.z+other.z) }
+}
+
+var v1 = new Vector(1, 2, 3);
+var v2 = new Vector(1, 2, 3);
+
+console.log(v1 + v2); // === {x: 2, y: 4, z: 6}
+```
+
 ### Prototype shortcut
 Stolen from Coffeescript, is the prototype shortcut:
 ```Javascript
 String::startsWith = |str| { this.substr(0, str.length) === str };
+```
+
+### Numbers as objects
+Ham wraps numbers in the javascript built-in Number Object and extends it's prototype with nice things:
+```Javascript
+3.times {
+  console.log('hello world!'); 
+}
 ```
 
 What else is comming?
