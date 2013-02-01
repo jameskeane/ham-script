@@ -18,3 +18,7 @@ Feature: Functional Support
   Scenario: Reducing a list
     Given `[1..10].reduce |acc, x| { acc + x }`
     Then the result should be `55`
+
+  Scenario: I want to pass a lambda with out stupid parenthesis
+    Given `var i = 0; 5.times { i += 1 }; return i;`
+    Then the result should be `5` 

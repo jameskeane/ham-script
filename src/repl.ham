@@ -1,0 +1,19 @@
+// start the REPL
+var readline = require('readline');
+var ham = require('./ham');
+
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+var prompt = {
+  rl.question("> ", |w| {
+    // TODO: Log the answer in a database
+    console.log(ham.eval(w));
+
+    prompt();
+  });
+};
+
+prompt();

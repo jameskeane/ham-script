@@ -6,6 +6,7 @@ var fs = require('fs'),
     vm = require('vm'),
     sourcemap = require('source-map'),
     argv = require('optimist').argv,
+    readline = require('readline'),
     ham = require('./bootstrap');
 
 // support source map'd stack traces
@@ -48,6 +49,8 @@ if(argv.o) {
   }
 } else if(argv._.length > 0) {
   require(process.cwd() + '/' + argv._[0]);
+} else {
+  require('./repl');
 }
 
 /*
