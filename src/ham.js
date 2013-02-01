@@ -1,26 +1,24 @@
 var lang = require('./lang'),
-    fs = require('fs'),
     _ = require('underscore'),
 
+    runtime    = require('./runtime'),
     ASTNode    = require('./compiler/node'),
     array      = require('./compiler/array'),
     functional = require('./compiler/functional'),
     oop        = require('./compiler/oop');
 
 lang.Parser.HamFile = new ASTNode.extend({
-  template: 'prologue',
-
   serialize: function(state) {
-    this.source.add(this.compile({}));
+    this.source.add([
+      '(', runtime.patch.toString(), ')(); (function() {']);
 
     if(this.expr) {
       this.source.add(['return ', this.expr.walk(state), ';']);
     } else {
-      this.elements[1].elements.forEach(function(el) {
+      this.elements.forEach(function(el) {
         this.source.add(el.statement.walk(state));
       }.bind(this));
     }
-    
     this.source.add('})();');
   }
 });
@@ -286,8 +284,7 @@ lang.Parser.SpecialNode = ASTNode.extend({
   }
 });
 
-module.exports.compile = function(filename) {
-  var source = fs.readFileSync(filename, 'utf8');
+module.exports.compile = function(source, filename) {
   var ast = lang.parse(source);
 
   var sourceGenerator = ast.walk({filename: filename, source: source});

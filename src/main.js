@@ -13,7 +13,7 @@ var source_maps = require('./stack_trace').maps;
 
 // hook into the require() system
 require.extensions['.ham'] = function(module, filename) {
-  var mod = ham.compile(filename);
+  var mod = ham.compile(fs.readFileSync(filename, 'utf8'), filename);
   var source = mod;
 
   if(typeof mod !== 'string') {
@@ -21,11 +21,13 @@ require.extensions['.ham'] = function(module, filename) {
     source_maps[filename] = new sourcemap.SourceMapConsumer(mod.map.toString());
   }
 
+  if(argv.c) {
+    var out_file = filename.replace(/\.ham$/, '.js');
+    fs.writeFile(out_file, source);
+  }
+
   module._compile(source, filename);
 };
-
-// first compile the ham compiler with the bootstrap
-ham = require('./ham');
 
 // once we are here we know we are bootstrapped
 if(argv.o) {

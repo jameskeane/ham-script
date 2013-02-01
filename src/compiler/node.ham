@@ -1,13 +1,10 @@
 var _ = require('underscore');
-var fs = require('fs');
 var sourceMap = require('source-map');
 
 // we will cache all compiled templates, so we don't have to read and recompile them
 var template_cache = {};
 
 class Node {
-  template: '',
-
   serialize: {
     return {};
   },
@@ -24,33 +21,6 @@ class Node {
     this.column = (this.offset - 1 - parsed.lastIndexOf('\n') or 0);
     this.source = new sourceMap.SourceNode(this.line, this.column, state.filename);
     return this.serialize(state) or this.source;
-  },
-
-  compile: |data| {
-    // read the template from cache or fs
-    var tmpl = template_cache[this.template];
-    if(tmpl == undefined) {
-      tmpl = _.template(fs.readFileSync(__dirname + '/templates/' + this.template + '.ejs', 'utf8'));
-      template_cache[this.template] = tmpl;
-    }
-
-    return tmpl(data);
-  },
-
-  toJS: |state| {
-    var data = this.serialize(state);
-    if(data.length) {
-      return data;
-    }
-
-    // read the template from cache or fs
-    var tmpl = template_cache[this.template];
-    if(tmpl == undefined) {
-      tmpl = _.template(fs.readFileSync(__dirname + '/templates/' + this.template + '.ejs', 'utf8'));
-      template_cache[this.template] = tmpl;
-    }
-
-    return tmpl(data);
   }
 };
 
