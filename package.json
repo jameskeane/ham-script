@@ -1,10 +1,10 @@
 {
   "name": "ham",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "A Hammier Javascript",
   "scripts": {
     "test": "./node_modules/.bin/cucumber.js",
-    "postinstall": "make"
+    "postinstall": "make peg"
   },
   "repository": {
     "type": "git",
