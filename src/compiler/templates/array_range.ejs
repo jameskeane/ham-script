@@ -1,6 +1,10 @@
 (function() {
   var acc = [];
+  <% if(Number(end) > Number(start)) { %>
   for(var i = <%= start %>; i <= <%= end %>; i++) {
+  <% } else { %>
+  for(var i = <%= start %>; i >= <%= end %>; i--) {
+  <% } %>
     acc.push(i);
   }
   return acc;
