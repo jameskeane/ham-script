@@ -1,6 +1,6 @@
 {
   "name": "ham",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A Hammier Javascript",
   "scripts": {
     "test": "./node_modules/.bin/cucumber.js",
