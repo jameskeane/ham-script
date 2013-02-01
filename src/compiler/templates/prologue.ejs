@@ -46,11 +46,15 @@
     for(var i = 0; i < this; i++) fn();
   };
 
-  // TODO: handle negative step
   Array.prototype.step = function(step) {
     var ret = [];
-    for(var i = 0; i < this.length; i += step)
-      ret.push(this[i]);
+    for(var i = 0; i < this.length; i += Math.abs(step)) {
+      var next = this[i];
+      if(step < 0) {
+        next = this[this.length-1-i];
+      }
+      ret.push(next);
+    }
     return ret;
   };
 
