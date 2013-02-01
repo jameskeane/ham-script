@@ -3,7 +3,7 @@
   "version": "0.0.8",
   "description": "A Hammier Javascript",
   "scripts": {
-    "test": "cucumber.js",
+    "test": "./node_modules/.bin/cucumber.js",
     "postinstall": "make"
   },
   "repository": {
