@@ -9891,6 +9891,13 @@ require.define("/src/runtime.js",function(require,module,exports,__dirname,__fil
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
   };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
+  };
 };
 
 });
@@ -9971,6 +9978,13 @@ require.define("/src/compiler/node.js",function(require,module,exports,__dirname
     var ret = [];
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
+  };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
   };
 })(); (function() {var _ = require('underscore');var sourceMap = require('source-map');var template_cache = {};var Node = Object.extend({serialize: function() {return {};}, walk:function(state) {var parsed = state.source.substr(Number(0),this.offset);var match = parsed.match(new RegExp("\n","g"));if(match){this.line=match.length["__op+"] (Number(1));} else {this.line=Number(1);}this.column=(this.offset["__op-"] (Number(1))["__op-"] (parsed.lastIndexOf('\n'))||Number(0));this.source=new sourceMap.SourceNode(this.line,this.column,state.filename);return this.serialize(state)||this.source;}});module.exports={extend: function(o) {return _.defaults(o,Node.prototype);}};})();
 });
@@ -11240,6 +11254,13 @@ require.define("/src/compiler/array.js",function(require,module,exports,__dirnam
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
   };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
+  };
 })(); (function() {var _ = require('underscore');var ASTNode = require('./node');var ArrayAccess = ASTNode.extend({serialize: function(state) {this.source.add(['[', this.elements[Number(2)].walk(state), ']']);}});var ArraySlice = ASTNode.extend({serialize: function(state) {var start = this.elements[Number(2)].start.textValue;var end = this.elements[Number(2)].end.textValue;var step = this.elements[Number(2)].step.integer;if(start!==''||end!==''){if(start===''){start=Number(0);}this.source.add('.slice('["__op+"] (start));if(end!==''){this.source.add(', '["__op+"] (end));}this.source.add(')');}if(step){this.source.add('.step('["__op+"] (step.textValue)["__op+"] (')'));}}});var ArrayRange = ASTNode.extend({serialize: function(state) {this.source.add(['(function() {', 'var acc = [];']);if(Number(this.end.textValue)>Number(this.start.textValue)){this.source.add(['for(var i = ', this.start.textValue, '; i <= ', this.end.textValue, '; i++) {']);} else {this.source.add(['for(var i = ', this.start.textValue, '; i >= ', this.end.textValue, '; i--) {']);}this.source.add(['acc.push(i);', '}', 'return acc;', '})()']);}});var ArrayDef = ASTNode.extend({serialize: function(state) {this.source.add('[');if(this.elements[Number(2)].textValue!==''){var first = this.elements[Number(2)];this.source.add(first.expr.elements[Number(0)].walk(state));first.elements[Number(1)].elements.each(function(node) {this.source.add(', ');this.source.add(node.expr.elements[Number(0)].walk(state));}.bind(this));}this.source.add(']');}});module.exports.ArrayAccess=ArrayAccess;module.exports.ArraySlice=ArraySlice;module.exports.ArrayRange=ArrayRange;module.exports.ArrayDef=ArrayDef;})();
 });
 
@@ -11320,6 +11341,13 @@ require.define("/src/compiler/functional.js",function(require,module,exports,__d
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
   };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
+  };
 })(); (function() {var _ = require('underscore');var ASTNode = require('./node');var ListComprehension = ASTNode.extend({serialize: function(state) {var params = [];var providers = [];var first = this.elements[Number(6)];params.push(first.ident_p.textValue);providers.push(first.expr.walk(state));this.elements.slice(7, -2).each(function(p) {if(p.textValue===''){return;}p=p.elements[Number(0)].elements[Number(3)];if(p.ident_p===undefined||p.expr===undefined){return;}params.push(p.ident_p.textValue);providers.push(p.expr.walk(state));});this.source.add('(function() { var tmp = [];');_.each(params,function(p, i) {this.source.add(['var ', p, '=', providers[i], ';']);}.bind(this));this.source.add('var evaluator = function('["__op+"] (params.join(', '))["__op+"] (') { return '));this.source.add(this.expr.walk(state));this.source.add(';};');this.source.add('for(var i = 0; i < Math.min('["__op+"] (params.join('.length, '))["__op+"] ('.length); i++) {'));this.source.add('tmp.push(evaluator('["__op+"] (params.join('[i], '))["__op+"] ('[i]));'));this.source.add('} return tmp; })()');}});var Lambda = ASTNode.extend({serialize: function(state) {var params = [];if(this.elements[Number(0)].textValue!==''){var first = this.elements[Number(0)].elements[Number(2)].ident_p;if(first!==undefined){params.push(first.textValue);var it = this.elements[Number(0)].elements[Number(2)].elements[Number(1)].elements;it.each(function(el) {params.push(el.ident_p.elements[Number(0)].textValue);});}}this.source.add(['function(', params.join(', '), ') {', this.funblock.walk(state), '}']);}});var FunctionInvocation = ASTNode.extend({serialize: function(state) {this.source.add('(');if(this.lambda){this.source.add(this.lambda.walk(state));} else if(this.elements[Number(2)].textValue!==''){this.source.add(this.elements[Number(2)].walk(state));}this.source.add(')');}});module.exports.ListComprehension=ListComprehension;module.exports.Lambda=Lambda;module.exports.FunctionInvocation=FunctionInvocation;})();
 });
 
@@ -11399,6 +11427,13 @@ require.define("/src/compiler/oop.js",function(require,module,exports,__dirname,
     var ret = [];
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
+  };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
   };
 })(); (function() {var ASTNode = require("./node");var ClassDef = ASTNode.extend({serialize: function(state) {var parent = "Object";if(this.elements[Number(4)].ident){parent=this.elements[Number(4)].ident.walk(state);}var body = this.elements[Number(5)].walk(state);var name = this.ident.walk(state);this.source.add(['var ', name, ' = ', parent, '.extend(', body, ');']);}});var PrototypeExpander = ASTNode.extend({serialize: function(state) {this.source.add(this.ident.walk(state));if(this.elements[Number(1)].ident_p){this.source.add('.prototype.');this.source.add(this.elements[Number(1)].ident_p.textValue);}}});module.exports.ClassDef=ClassDef;module.exports.PrototypeExpander=PrototypeExpander;})();
 });

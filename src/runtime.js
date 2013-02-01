@@ -75,4 +75,11 @@ module.exports.patch = function() {
     this.each(function(it) { if(f(it)) ret.push(it); });
     return ret;
   };
+
+  Array.prototype.reduce = function(it, memo, context) {
+    if(memo === undefined && typeof this[0] === 'number')
+      memo = Number(0);
+
+    return _.reduce(this, it, memo, context);
+  };
 };
