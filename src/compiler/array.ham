@@ -31,13 +31,23 @@ class ArraySlice extends ASTNode {
 };
 
 class ArrayRange extends ASTNode {
-  template: 'array_range',
-
   serialize: |state| {
-    this.source.add(this.compile({
-      start: this.start.textValue,
-      end: this.end.textValue
-    }));
+    this.source.add([
+      '(function() {',
+        'var acc = [];']);
+
+    if(Number(this.end.textValue) > Number(this.start.textValue)) {
+      this.source.add([
+        'for(var i = ', this.start.textValue, '; i <= ', this.end.textValue, '; i++) {']);
+    } else {
+      this.source.add([
+        'for(var i = ', this.start.textValue, '; i >= ', this.end.textValue, '; i--) {']);
+    }
+    this.source.add([
+          'acc.push(i);',
+        '}',
+        'return acc;',
+      '})()']);
   }
 };
 

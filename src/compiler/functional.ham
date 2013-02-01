@@ -2,8 +2,6 @@ var _ = require('underscore');
 var ASTNode = require('./node');
 
 class ListComprehension extends ASTNode {
-  template: 'comprehension',
-
   serialize: |state| {
     // collect params and providers
     var params = [];
@@ -55,9 +53,11 @@ class Lambda extends ASTNode {
       }
     }
 
-    this.source.add(['function(', params.join(', '), ') {']);
-    this.source.add(this.funblock.walk(state));
-    this.source.add('}');
+    this.source.add([
+      'function(', params.join(', '), ') {',
+        this.funblock.walk(state),
+      '}'
+    ]);
   }
 };
 
