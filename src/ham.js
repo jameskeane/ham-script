@@ -13,10 +13,14 @@ lang.Parser.HamFile = new ASTNode.extend({
   serialize: function(state) {
     this.source.add(this.compile({}));
 
-    this.elements[1].elements.forEach(function(el) {
+    if(this.expr) {
+      this.source.add(['return ', this.expr.walk(state), ';']);
+    } else {
+      this.elements[1].elements.forEach(function(el) {
         this.source.add(el.statement.walk(state));
-    }.bind(this));
-
+      }.bind(this));
+    }
+    
     this.source.add('})();');
   }
 });
@@ -290,4 +294,13 @@ module.exports.compile = function(filename) {
   var sm = sourceGenerator.toStringWithSourceMap({file: filename});
   
   return sm;
+};
+
+module.exports.eval = function(source) {
+  var ast = lang.parse(source);
+
+  var sourceGenerator = ast.walk({filename: 'eval', source: source});
+  var sm = sourceGenerator.toStringWithSourceMap({file: 'eval'});
+  
+  return eval(sm.code);
 };

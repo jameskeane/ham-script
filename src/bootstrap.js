@@ -44,9 +44,13 @@ lang.Parser.HamFile = ASTNode.extend({
   serialize: function(state) {
     var indent = 0;
 
+    if(this.expr) {
+      return tmpl({}) + 'return ' + this.expr.toJS(state, indent) + ';})();';
+    }
+
     var ret = [];
 
-    this.elements[1].elements.forEach(function(el) {
+    this.elements.forEach(function(el) {
         ret.push(el.statement.toJS(state, indent+1));
     });
 
@@ -461,4 +465,8 @@ module.exports.compile = function(filename) {
   var source = fs.readFileSync(filename, 'utf8');
   var ast = lang.parse(source);
   return ast.toJS({});
+}
+module.exports.eval = function(source) {
+  var ast = lang.parse(source);
+  return eval(ast.toJS({}));
 }

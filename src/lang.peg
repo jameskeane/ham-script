@@ -1,5 +1,5 @@
 grammar ham
-  root      <- _ (_ statement _)* <HamFile>
+  root      <- ( _ !statement expr _ / (_ statement _)* ) <HamFile>
   funblock  <- ("{" _ (_ statement _)* "}" / "{" _ expr _ "}") <FunctionalBlock> 
   block     <- "{" _ (_ statement _)* "}" <Block> 
 

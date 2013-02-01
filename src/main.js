@@ -41,7 +41,7 @@ if(argv.o) {
     fs.writeFile(map_file, sm.map.toString());
     fs.writeFile(out_file, sm.code);
   }
-} else {
+} else if(argv._.length > 0) {
   require(process.cwd() + '/' + argv._[0]);
 }
 
@@ -57,3 +57,5 @@ if(process.argv[3] == '-o') {
   require(file);
 }
 */
+
+module.exports.eval = ham.eval;
