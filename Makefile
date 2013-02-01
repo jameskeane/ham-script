@@ -5,4 +5,3 @@ all:
 
 clean:
 	rm -rf ./src/compiler/*.js
-	rm -rf ./src/lang.js

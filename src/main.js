@@ -29,6 +29,9 @@ require.extensions['.ham'] = function(module, filename) {
   module._compile(source, filename);
 };
 
+// compile the compiler
+ham = require('./ham');
+
 // once we are here we know we are bootstrapped
 if(argv.o) {
   var out_file = argv.o,
