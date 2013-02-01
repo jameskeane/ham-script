@@ -3,9 +3,7 @@ var ASTNode = require('./node');
 
 class ArrayAccess extends ASTNode {
   serialize: |state| {
-    this.source.add('[');
-    this.source.add(this.elements[2].walk(state));
-    this.source.add(']');
+    this.source.add(['[', this.elements[2].walk(state), ']']);
   }
 };
 

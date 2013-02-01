@@ -37,6 +37,7 @@ if(argv.o) {
     console.log(sm.code);
   } else {
     sm.code += '\n//@ sourceMappingURL=' + map_file;
+    sm.code += '\n//@ sourceURL=' + argv._[0];
     fs.writeFile(map_file, sm.map.toString());
     fs.writeFile(out_file, sm.code);
   }

@@ -25,9 +25,7 @@ class ListComprehension extends ASTNode {
 
     this.source.add('(function() { var tmp = [];');
     _.each(params, |p, i| { 
-      this.source.add('var ' + p + '=');
-      this.source.add(providers[i]);
-      this.source.add(';');
+      this.source.add(['var ', p, '=', providers[i], ';']);
     }.bind(this));
 
     this.source.add('var evaluator = function('+params.join(', ')+') { return ');
@@ -57,9 +55,7 @@ class Lambda extends ASTNode {
       }
     }
 
-    this.source.add('function(');
-    this.source.add(params.join(', '));
-    this.source.add(') {');
+    this.source.add(['function(', params.join(', '), ') {']);
     this.source.add(this.funblock.walk(state));
     this.source.add('}');
   }
