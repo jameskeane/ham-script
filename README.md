@@ -94,6 +94,15 @@ Ham wraps numbers in the javascript built-in Number Object and extends it's prot
 };
 ```
 
+### Function Guards
+Another thing from functional languages is the function guard, it requires that all expressions evaluate to true otherwise
+the function does not run.
+```Javascript
+var x = | y < 3 | { y + 3 }
+x(5) === undefined;
+x(2) === 5;
+```
+
 What else is coming?
 ---------------------
 
@@ -126,6 +135,13 @@ Yeah, I haven't gotten around to unary operators yet.  I've been focussing on th
 ### Loops
 I haven't implemented while or for loops yet, as I am still experimenting with syntax for them.  I've been getting by
 largely with the combination of ranges and list comprehensions with `.each`.
+
+### do and while are just runtime functions
+Now that we have function guards we can do some pretty crazy stuff, like make do and while standard functions
+```Javascript
+while | x < 3 | { x++ }
+```
+
 
 Usage
 -----
