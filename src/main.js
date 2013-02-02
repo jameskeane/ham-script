@@ -38,7 +38,10 @@ if(argv.o) {
   var out_file = argv.o,
       map_file = out_file + '.map';
 
-  var sm = ham.compile(process.cwd() + '/' + argv._[0]);
+  var filename = process.cwd() + '/' + argv._[0],
+      source = fs.readFileSync(filename, 'utf8');
+
+  var sm = ham.compile(source, filename);
   if(out_file === true) {
     console.log(sm.code);
   } else {

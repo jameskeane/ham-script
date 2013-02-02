@@ -22,3 +22,9 @@ Feature: Functional Support
   Scenario: I want to pass a lambda with out stupid parenthesis
     Given `var i = 0; 5.times { i += 1 }; return i;`
     Then the result should be `5` 
+
+  Scenario: I want to use function guards
+    Given `| x < 3 && x > 1 | { x + 3 }`
+    Then applying `[3]` will yield `undefined`
+    Then applying `[1]` will yield `undefined`
+    Then applying `[2]` will yield `5`

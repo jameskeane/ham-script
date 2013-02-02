@@ -19,6 +19,10 @@ grammar ham
             / "%=" / "==" / "!=" / "**" / ">" / "<" / "<=" / ">=" 
             / "&&" / [-+=*\^/%]
 
+  guard_expr <- value_acs ( _ comp_op _ value_acs )* <GuardExpression>
+  comp_op    <- "isnt" / "is" / "==" / "!=" / "===" / "!==" / ">" / "<"
+             / "<=" / ">=" / "&&"
+
   value_acs <- value ( (_ "." _ value) / (_ accessor) )* <ValueAccessor>
   value     <- number / new_obj / special / string / object / lambda / listcomp / array / array_rng / proto / chain_pp
   chain_pp  <- "(" _ expr _ ")" <ParenExpression>
@@ -34,7 +38,7 @@ grammar ham
 
   object    <- "{" (object_p ("," object_p)* )? "}" <ObjectNode>
   object_p  <- _ name:(string / obj_name) _ ":" _ expr _
-  lambda    <- ("|" _ (ident_p (_ "," _ ident_p)* )? _ "|")? _ funblock <Lambda>
+  lambda    <- ("|" _ (guard_expr (_ "," _ guard_expr)* )? _ "|")? _ funblock <Lambda>
   listcomp  <- "[" _  expr _ "|" _ (ident_p _ "<-" _ expr) (_ "," _ (ident_p _ "<-" _ expr))* _ "]" <ListComprehension>
 
   funcall   <- (_ lambda _ / "(" _ expr_list? _ ")") <FunctionInvocation>

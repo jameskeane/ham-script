@@ -40,21 +40,41 @@ class Lambda extends ASTNode {
   serialize: |state| {
     // get the params
     var params = [];
+    var guards = [];
 
     // Is it a no param list lambda?
     if(this.elements[0].textValue isnt '') {
-      var first = this.elements[0].elements[2].ident_p;
+      var first = this.elements[0].elements[2].guard_expr;
       if(first isnt undefined) {
-        params.push(first.textValue);
+        if(first.guard()) { 
+          guards.push(first.walk(state));
+          params.push(first.variables(state));
+        } else {
+          params.push(first.walk(state));
+        }
+        
         var it = this.elements[0].elements[2].elements[1].elements;
         it.each |el| {
-          params.push(el.ident_p.elements[0].textValue);
+          var g = el.guard_expr;
+          if(g.guard()) { 
+            guards.push(g.walk(state));
+            params.push(g.variables(state));
+          } else {
+            params.push(g.walk(state));
+          }
         };
       }
     }
 
     this.source.add([
-      'function(', params.join(', '), ') {',
+      'function(', params.join(', '), ') {']);
+
+    var source = this.source;
+    guards.each |guard| {
+      source.add(['if(!(', guard, ')) return undefined;']);
+    };
+
+    this.source.add([
         this.funblock.walk(state),
       '}'
     ]);

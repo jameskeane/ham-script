@@ -44,6 +44,40 @@ lang.Parser.FunctionalBlock = ASTNode.extend({
   }
 });
 
+lang.Parser.GuardExpression = ASTNode.extend({
+  translate: {
+    'or': '||',
+    'is': '===',
+    'isnt': '!=='
+  },
+
+  serialize: function(state) {
+    this.source.add(this.value_acs.walk(state));
+    
+    this.elements[1].elements.forEach(function(el) {     
+      var op = this.translate[el.comp_op.textValue];
+      if(op === undefined)
+        op = el.comp_op.textValue;
+
+      this.source.add(op);
+      this.source.add(el.value_acs.walk(state));
+    }.bind(this));
+  },
+
+  guard: function() {
+    return this.elements[1].elements.length > 0;
+  }, 
+
+  variables: function(state) {
+    var ret =  [this.value_acs.walk(state)];
+    //this.elements[1].elements.forEach(function(el) {
+    //  console.log(el.value_acs.value);  
+    //  ret.push(el.value_acs.walk(state));
+    //});
+    return ret;
+  }
+});
+
 lang.Parser.IfStmt = ASTNode.extend({
   serialize: function(state) {
     var condition = this.expr.walk(state);

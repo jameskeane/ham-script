@@ -3418,6 +3418,461 @@ require.define("/src/lang.js",function(require,module,exports,__dirname,__filena
       }
       return this._nodeCache["binaryop"][index0] = address0;
     },
+    __consume__guard_expr: function(input) {
+      var address0 = null, index0 = this._offset;
+      this._nodeCache["guard_expr"] = this._nodeCache["guard_expr"] || {};
+      var cached = this._nodeCache["guard_expr"][index0];
+      if (cached) {
+        this._offset += cached.textValue.length;
+        return cached;
+      }
+      var index1 = this._offset, elements0 = [], labelled0 = {}, text0 = "";
+      var address1 = null;
+      address1 = this.__consume__value_acs();
+      if (address1) {
+        elements0.push(address1);
+        text0 += address1.textValue;
+        labelled0.value_acs = address1;
+        var address2 = null;
+        var remaining0 = 0, index2 = this._offset, elements1 = [], text1 = "", address3 = true;
+        while (address3) {
+          var index3 = this._offset, elements2 = [], labelled1 = {}, text2 = "";
+          var address4 = null;
+          address4 = this.__consume___();
+          if (address4) {
+            elements2.push(address4);
+            text2 += address4.textValue;
+            labelled1._ = address4;
+            var address5 = null;
+            address5 = this.__consume__comp_op();
+            if (address5) {
+              elements2.push(address5);
+              text2 += address5.textValue;
+              labelled1.comp_op = address5;
+              var address6 = null;
+              address6 = this.__consume___();
+              if (address6) {
+                elements2.push(address6);
+                text2 += address6.textValue;
+                labelled1._ = address6;
+                var address7 = null;
+                address7 = this.__consume__value_acs();
+                if (address7) {
+                  elements2.push(address7);
+                  text2 += address7.textValue;
+                  labelled1.value_acs = address7;
+                } else {
+                  elements2 = null;
+                  this._offset = index3;
+                }
+              } else {
+                elements2 = null;
+                this._offset = index3;
+              }
+            } else {
+              elements2 = null;
+              this._offset = index3;
+            }
+          } else {
+            elements2 = null;
+            this._offset = index3;
+          }
+          if (elements2) {
+            this._offset = index3;
+            var klass0 = this.constructor.SyntaxNode;
+            var type0 = null;
+            address3 = new klass0(text2, this._offset, elements2, labelled1);
+            if (typeof type0 === "object") {
+              extend(address3, type0);
+            }
+            this._offset += text2.length;
+          } else {
+            address3 = null;
+          }
+          if (address3) {
+            elements1.push(address3);
+            text1 += address3.textValue;
+            remaining0 -= 1;
+          }
+        }
+        if (remaining0 <= 0) {
+          this._offset = index2;
+          var klass1 = this.constructor.SyntaxNode;
+          var type1 = null;
+          address2 = new klass1(text1, this._offset, elements1);
+          if (typeof type1 === "object") {
+            extend(address2, type1);
+          }
+          this._offset += text1.length;
+        } else {
+          address2 = null;
+        }
+        if (address2) {
+          elements0.push(address2);
+          text0 += address2.textValue;
+        } else {
+          elements0 = null;
+          this._offset = index1;
+        }
+      } else {
+        elements0 = null;
+        this._offset = index1;
+      }
+      if (elements0) {
+        this._offset = index1;
+        var klass2 = this.constructor.SyntaxNode;
+        var type2 = find(this.constructor, "GuardExpression");
+        address0 = new klass2(text0, this._offset, elements0, labelled0);
+        if (typeof type2 === "object") {
+          extend(address0, type2);
+        }
+        this._offset += text0.length;
+      } else {
+        address0 = null;
+      }
+      return this._nodeCache["guard_expr"][index0] = address0;
+    },
+    __consume__comp_op: function(input) {
+      var address0 = null, index0 = this._offset;
+      this._nodeCache["comp_op"] = this._nodeCache["comp_op"] || {};
+      var cached = this._nodeCache["comp_op"][index0];
+      if (cached) {
+        this._offset += cached.textValue.length;
+        return cached;
+      }
+      var index1 = this._offset;
+      var slice0 = null;
+      if (this._input.length > this._offset) {
+        slice0 = this._input.substring(this._offset, this._offset + 4);
+      } else {
+        slice0 = null;
+      }
+      if (slice0 === "isnt") {
+        var klass0 = this.constructor.SyntaxNode;
+        var type0 = null;
+        address0 = new klass0("isnt", this._offset, []);
+        if (typeof type0 === "object") {
+          extend(address0, type0);
+        }
+        this._offset += 4;
+      } else {
+        address0 = null;
+        var slice1 = null;
+        if (this._input.length > this._offset) {
+          slice1 = this._input.substring(this._offset, this._offset + 1);
+        } else {
+          slice1 = null;
+        }
+        if (!this.error || this.error.offset <= this._offset) {
+          this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"isnt\""};
+        }
+      }
+      if (address0) {
+      } else {
+        this._offset = index1;
+        var slice2 = null;
+        if (this._input.length > this._offset) {
+          slice2 = this._input.substring(this._offset, this._offset + 2);
+        } else {
+          slice2 = null;
+        }
+        if (slice2 === "is") {
+          var klass1 = this.constructor.SyntaxNode;
+          var type1 = null;
+          address0 = new klass1("is", this._offset, []);
+          if (typeof type1 === "object") {
+            extend(address0, type1);
+          }
+          this._offset += 2;
+        } else {
+          address0 = null;
+          var slice3 = null;
+          if (this._input.length > this._offset) {
+            slice3 = this._input.substring(this._offset, this._offset + 1);
+          } else {
+            slice3 = null;
+          }
+          if (!this.error || this.error.offset <= this._offset) {
+            this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"is\""};
+          }
+        }
+        if (address0) {
+        } else {
+          this._offset = index1;
+          var slice4 = null;
+          if (this._input.length > this._offset) {
+            slice4 = this._input.substring(this._offset, this._offset + 2);
+          } else {
+            slice4 = null;
+          }
+          if (slice4 === "==") {
+            var klass2 = this.constructor.SyntaxNode;
+            var type2 = null;
+            address0 = new klass2("==", this._offset, []);
+            if (typeof type2 === "object") {
+              extend(address0, type2);
+            }
+            this._offset += 2;
+          } else {
+            address0 = null;
+            var slice5 = null;
+            if (this._input.length > this._offset) {
+              slice5 = this._input.substring(this._offset, this._offset + 1);
+            } else {
+              slice5 = null;
+            }
+            if (!this.error || this.error.offset <= this._offset) {
+              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"==\""};
+            }
+          }
+          if (address0) {
+          } else {
+            this._offset = index1;
+            var slice6 = null;
+            if (this._input.length > this._offset) {
+              slice6 = this._input.substring(this._offset, this._offset + 2);
+            } else {
+              slice6 = null;
+            }
+            if (slice6 === "!=") {
+              var klass3 = this.constructor.SyntaxNode;
+              var type3 = null;
+              address0 = new klass3("!=", this._offset, []);
+              if (typeof type3 === "object") {
+                extend(address0, type3);
+              }
+              this._offset += 2;
+            } else {
+              address0 = null;
+              var slice7 = null;
+              if (this._input.length > this._offset) {
+                slice7 = this._input.substring(this._offset, this._offset + 1);
+              } else {
+                slice7 = null;
+              }
+              if (!this.error || this.error.offset <= this._offset) {
+                this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"!=\""};
+              }
+            }
+            if (address0) {
+            } else {
+              this._offset = index1;
+              var slice8 = null;
+              if (this._input.length > this._offset) {
+                slice8 = this._input.substring(this._offset, this._offset + 3);
+              } else {
+                slice8 = null;
+              }
+              if (slice8 === "===") {
+                var klass4 = this.constructor.SyntaxNode;
+                var type4 = null;
+                address0 = new klass4("===", this._offset, []);
+                if (typeof type4 === "object") {
+                  extend(address0, type4);
+                }
+                this._offset += 3;
+              } else {
+                address0 = null;
+                var slice9 = null;
+                if (this._input.length > this._offset) {
+                  slice9 = this._input.substring(this._offset, this._offset + 1);
+                } else {
+                  slice9 = null;
+                }
+                if (!this.error || this.error.offset <= this._offset) {
+                  this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"===\""};
+                }
+              }
+              if (address0) {
+              } else {
+                this._offset = index1;
+                var slice10 = null;
+                if (this._input.length > this._offset) {
+                  slice10 = this._input.substring(this._offset, this._offset + 3);
+                } else {
+                  slice10 = null;
+                }
+                if (slice10 === "!==") {
+                  var klass5 = this.constructor.SyntaxNode;
+                  var type5 = null;
+                  address0 = new klass5("!==", this._offset, []);
+                  if (typeof type5 === "object") {
+                    extend(address0, type5);
+                  }
+                  this._offset += 3;
+                } else {
+                  address0 = null;
+                  var slice11 = null;
+                  if (this._input.length > this._offset) {
+                    slice11 = this._input.substring(this._offset, this._offset + 1);
+                  } else {
+                    slice11 = null;
+                  }
+                  if (!this.error || this.error.offset <= this._offset) {
+                    this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"!==\""};
+                  }
+                }
+                if (address0) {
+                } else {
+                  this._offset = index1;
+                  var slice12 = null;
+                  if (this._input.length > this._offset) {
+                    slice12 = this._input.substring(this._offset, this._offset + 1);
+                  } else {
+                    slice12 = null;
+                  }
+                  if (slice12 === ">") {
+                    var klass6 = this.constructor.SyntaxNode;
+                    var type6 = null;
+                    address0 = new klass6(">", this._offset, []);
+                    if (typeof type6 === "object") {
+                      extend(address0, type6);
+                    }
+                    this._offset += 1;
+                  } else {
+                    address0 = null;
+                    var slice13 = null;
+                    if (this._input.length > this._offset) {
+                      slice13 = this._input.substring(this._offset, this._offset + 1);
+                    } else {
+                      slice13 = null;
+                    }
+                    if (!this.error || this.error.offset <= this._offset) {
+                      this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\">\""};
+                    }
+                  }
+                  if (address0) {
+                  } else {
+                    this._offset = index1;
+                    var slice14 = null;
+                    if (this._input.length > this._offset) {
+                      slice14 = this._input.substring(this._offset, this._offset + 1);
+                    } else {
+                      slice14 = null;
+                    }
+                    if (slice14 === "<") {
+                      var klass7 = this.constructor.SyntaxNode;
+                      var type7 = null;
+                      address0 = new klass7("<", this._offset, []);
+                      if (typeof type7 === "object") {
+                        extend(address0, type7);
+                      }
+                      this._offset += 1;
+                    } else {
+                      address0 = null;
+                      var slice15 = null;
+                      if (this._input.length > this._offset) {
+                        slice15 = this._input.substring(this._offset, this._offset + 1);
+                      } else {
+                        slice15 = null;
+                      }
+                      if (!this.error || this.error.offset <= this._offset) {
+                        this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"<\""};
+                      }
+                    }
+                    if (address0) {
+                    } else {
+                      this._offset = index1;
+                      var slice16 = null;
+                      if (this._input.length > this._offset) {
+                        slice16 = this._input.substring(this._offset, this._offset + 2);
+                      } else {
+                        slice16 = null;
+                      }
+                      if (slice16 === "<=") {
+                        var klass8 = this.constructor.SyntaxNode;
+                        var type8 = null;
+                        address0 = new klass8("<=", this._offset, []);
+                        if (typeof type8 === "object") {
+                          extend(address0, type8);
+                        }
+                        this._offset += 2;
+                      } else {
+                        address0 = null;
+                        var slice17 = null;
+                        if (this._input.length > this._offset) {
+                          slice17 = this._input.substring(this._offset, this._offset + 1);
+                        } else {
+                          slice17 = null;
+                        }
+                        if (!this.error || this.error.offset <= this._offset) {
+                          this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"<=\""};
+                        }
+                      }
+                      if (address0) {
+                      } else {
+                        this._offset = index1;
+                        var slice18 = null;
+                        if (this._input.length > this._offset) {
+                          slice18 = this._input.substring(this._offset, this._offset + 2);
+                        } else {
+                          slice18 = null;
+                        }
+                        if (slice18 === ">=") {
+                          var klass9 = this.constructor.SyntaxNode;
+                          var type9 = null;
+                          address0 = new klass9(">=", this._offset, []);
+                          if (typeof type9 === "object") {
+                            extend(address0, type9);
+                          }
+                          this._offset += 2;
+                        } else {
+                          address0 = null;
+                          var slice19 = null;
+                          if (this._input.length > this._offset) {
+                            slice19 = this._input.substring(this._offset, this._offset + 1);
+                          } else {
+                            slice19 = null;
+                          }
+                          if (!this.error || this.error.offset <= this._offset) {
+                            this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\">=\""};
+                          }
+                        }
+                        if (address0) {
+                        } else {
+                          this._offset = index1;
+                          var slice20 = null;
+                          if (this._input.length > this._offset) {
+                            slice20 = this._input.substring(this._offset, this._offset + 2);
+                          } else {
+                            slice20 = null;
+                          }
+                          if (slice20 === "&&") {
+                            var klass10 = this.constructor.SyntaxNode;
+                            var type10 = null;
+                            address0 = new klass10("&&", this._offset, []);
+                            if (typeof type10 === "object") {
+                              extend(address0, type10);
+                            }
+                            this._offset += 2;
+                          } else {
+                            address0 = null;
+                            var slice21 = null;
+                            if (this._input.length > this._offset) {
+                              slice21 = this._input.substring(this._offset, this._offset + 1);
+                            } else {
+                              slice21 = null;
+                            }
+                            if (!this.error || this.error.offset <= this._offset) {
+                              this.error = this.constructor.lastError = {input: this._input, offset: this._offset, expected: "\"&&\""};
+                            }
+                          }
+                          if (address0) {
+                          } else {
+                            this._offset = index1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      return this._nodeCache["comp_op"][index0] = address0;
+    },
     __consume__value_acs: function(input) {
       var address0 = null, index0 = this._offset;
       this._nodeCache["value_acs"] = this._nodeCache["value_acs"] || {};
@@ -4872,11 +5327,11 @@ require.define("/src/lang.js",function(require,module,exports,__dirname,__filena
           var index4 = this._offset;
           var index5 = this._offset, elements2 = [], labelled2 = {}, text2 = "";
           var address5 = null;
-          address5 = this.__consume__ident_p();
+          address5 = this.__consume__guard_expr();
           if (address5) {
             elements2.push(address5);
             text2 += address5.textValue;
-            labelled2.ident_p = address5;
+            labelled2.guard_expr = address5;
             var address6 = null;
             var remaining0 = 0, index6 = this._offset, elements3 = [], text3 = "", address7 = true;
             while (address7) {
@@ -4924,11 +5379,11 @@ require.define("/src/lang.js",function(require,module,exports,__dirname,__filena
                     text4 += address10.textValue;
                     labelled3._ = address10;
                     var address11 = null;
-                    address11 = this.__consume__ident_p();
+                    address11 = this.__consume__guard_expr();
                     if (address11) {
                       elements4.push(address11);
                       text4 += address11.textValue;
-                      labelled3.ident_p = address11;
+                      labelled3.guard_expr = address11;
                     } else {
                       elements4 = null;
                       this._offset = index7;
@@ -11389,7 +11844,7 @@ require.define("/src/compiler/functional.js",function(require,module,exports,__d
 
     return _.reduce(this, it, memo, context);
   };
-})(); (function() {var _ = require('underscore');var ASTNode = require('./node');var ListComprehension = ASTNode.extend({serialize: function(state) {var params = [];var providers = [];var first = this.elements[Number(6)];params.push(first.ident_p.textValue);providers.push(first.expr.walk(state));this.elements.slice(7, -2).each(function(p) {if(p.textValue===''){return;}p=p.elements[Number(0)].elements[Number(3)];if(p.ident_p===undefined||p.expr===undefined){return;}params.push(p.ident_p.textValue);providers.push(p.expr.walk(state));});this.source.add('(function() { var tmp = [];');_.each(params,function(p, i) {this.source.add(['var ', p, '=', providers[i], ';']);}.bind(this));this.source.add('var evaluator = function('["__op+"] (params.join(', '))["__op+"] (') { return '));this.source.add(this.expr.walk(state));this.source.add(';};');this.source.add('for(var i = 0; i < Math.min('["__op+"] (params.join('.length, '))["__op+"] ('.length); i++) {'));this.source.add('tmp.push(evaluator('["__op+"] (params.join('[i], '))["__op+"] ('[i]));'));this.source.add('} return tmp; })()');}});var Lambda = ASTNode.extend({serialize: function(state) {var params = [];if(this.elements[Number(0)].textValue!==''){var first = this.elements[Number(0)].elements[Number(2)].ident_p;if(first!==undefined){params.push(first.textValue);var it = this.elements[Number(0)].elements[Number(2)].elements[Number(1)].elements;it.each(function(el) {params.push(el.ident_p.elements[Number(0)].textValue);});}}this.source.add(['function(', params.join(', '), ') {', this.funblock.walk(state), '}']);}});var FunctionInvocation = ASTNode.extend({serialize: function(state) {this.source.add('(');if(this.lambda){this.source.add(this.lambda.walk(state));} else if(this.elements[Number(2)].textValue!==''){this.source.add(this.elements[Number(2)].walk(state));}this.source.add(')');}});module.exports.ListComprehension=ListComprehension;module.exports.Lambda=Lambda;module.exports.FunctionInvocation=FunctionInvocation;})();
+})(); (function() {var _ = require('underscore');var ASTNode = require('./node');var ListComprehension = ASTNode.extend({serialize: function(state) {var params = [];var providers = [];var first = this.elements[Number(6)];params.push(first.ident_p.textValue);providers.push(first.expr.walk(state));this.elements.slice(7, -2).each(function(p) {if(p.textValue===''){return;}p=p.elements[Number(0)].elements[Number(3)];if(p.ident_p===undefined||p.expr===undefined){return;}params.push(p.ident_p.textValue);providers.push(p.expr.walk(state));});this.source.add('(function() { var tmp = [];');_.each(params,function(p, i) {this.source.add(['var ', p, '=', providers[i], ';']);}.bind(this));this.source.add('var evaluator = function('["__op+"] (params.join(', '))["__op+"] (') { return '));this.source.add(this.expr.walk(state));this.source.add(';};');this.source.add('for(var i = 0; i < Math.min('["__op+"] (params.join('.length, '))["__op+"] ('.length); i++) {'));this.source.add('tmp.push(evaluator('["__op+"] (params.join('[i], '))["__op+"] ('[i]));'));this.source.add('} return tmp; })()');}});var Lambda = ASTNode.extend({serialize: function(state) {var params = [];var guards = [];if(this.elements[Number(0)].textValue!==''){var first = this.elements[Number(0)].elements[Number(2)].guard_expr;if(first!==undefined){if(first.guard()){guards.push(first.walk(state));params.push(first.variables(state));} else {params.push(first.walk(state));}var it = this.elements[Number(0)].elements[Number(2)].elements[Number(1)].elements;it.each(function(el) {var g = el.guard_expr;if(g.guard()){guards.push(g.walk(state));params.push(g.variables(state));} else {params.push(g.walk(state));}});}}this.source.add(['function(', params.join(', '), ') {']);var source = this.source;guards.each(function(guard) {source.add(['if(!(', guard, ')) return undefined;']);});this.source.add([this.funblock.walk(state), '}']);}});var FunctionInvocation = ASTNode.extend({serialize: function(state) {this.source.add('(');if(this.lambda){this.source.add(this.lambda.walk(state));} else if(this.elements[Number(2)].textValue!==''){this.source.add(this.elements[Number(2)].walk(state));}this.source.add(')');}});module.exports.ListComprehension=ListComprehension;module.exports.Lambda=Lambda;module.exports.FunctionInvocation=FunctionInvocation;})();
 });
 
 require.define("/src/compiler/oop.js",function(require,module,exports,__dirname,__filename,process,global){(function () {
@@ -11522,6 +11977,40 @@ lang.Parser.FunctionalBlock = ASTNode.extend({
         this.source.add(el.statement.walk(state));
       }.bind(this));
     }
+  }
+});
+
+lang.Parser.GuardExpression = ASTNode.extend({
+  translate: {
+    'or': '||',
+    'is': '===',
+    'isnt': '!=='
+  },
+
+  serialize: function(state) {
+    this.source.add(this.value_acs.walk(state));
+    
+    this.elements[1].elements.forEach(function(el) {     
+      var op = this.translate[el.comp_op.textValue];
+      if(op === undefined)
+        op = el.comp_op.textValue;
+
+      this.source.add(op);
+      this.source.add(el.value_acs.walk(state));
+    }.bind(this));
+  },
+
+  guard: function() {
+    return this.elements[1].elements.length > 0;
+  }, 
+
+  variables: function(state) {
+    var ret =  [this.value_acs.walk(state)];
+    //this.elements[1].elements.forEach(function(el) {
+    //  console.log(el.value_acs.value);  
+    //  ret.push(el.value_acs.walk(state));
+    //});
+    return ret;
   }
 });
 
