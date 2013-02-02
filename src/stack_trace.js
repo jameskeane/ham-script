@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs'),
+    st = require('stack-trace');
 
 var cache = module.exports.maps = {};
 
@@ -35,25 +36,34 @@ process.on('uncaughtException', function(error) {
     console.log('Uncaught exception:', error);
     process.exit();
   }
-  var match = /at ([^:]+):(\d+):(\d+)/.exec(error.stack);
-  if (match) {
 
-    var position = mapSourcePosition({
-      source: match[1],
-      line: match[2],
-      column: match[3]
-    });
-    
-    if (fs.existsSync(position.source)) {
-      var contents = fs.readFileSync(position.source, 'utf8');
-      var line = contents.split(/(?:\r\n|\r|\n)/)[position.line - 1];
-      if (line) {
-        console.log('\n' + position.source + ':' + position.line);
-        console.log(line);
-        console.log(new Array(+position.column).join(' ') + '^');
-      }
+  var parsed = st.parse(error);
+
+  var first = parsed[0];
+  var position = mapSourcePosition({
+    source: first.fileName,
+    line: first.lineNumber,
+    column: first.columnNumber
+  });
+  if (fs.existsSync(position.source)) {
+    var contents = fs.readFileSync(position.source, 'utf8');
+    var line = contents.split(/(?:\r\n|\r|\n)/)[position.line - 1];
+    if (line) {
+      console.log(line);
+      console.log(new Array(+position.column).join(' ') + '^');
     }
   }
-  console.log(error.stack);
+  console.log(error.toString());
+  parsed.forEach(function(trace) {
+    var position = mapSourcePosition({
+      source: trace.fileName,
+      line: trace.lineNumber,
+      column: trace.columnNumber
+    });
+
+    var name = trace.functionName || (trace.typeName + '.' + (trace.methodName || '<anonymous>'));
+
+    console.log('    at '+name+' ('+trace.fileName+':'+position.line+':'+position.column+')');
+  });
   process.exit();
 });
