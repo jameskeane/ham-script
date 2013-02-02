@@ -50,7 +50,7 @@ if(argv.o) {
 } else if(argv._.length > 0) {
   require(process.cwd() + '/' + argv._[0]);
 } else {
-  require('./repl');
+  require('./repl').start();
 }
 
 /*
