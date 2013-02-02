@@ -69,11 +69,18 @@ lang.Parser.GuardExpression = ASTNode.extend({
   }, 
 
   variables: function(state) {
+    var seen = {};
     var ret =  [this.value_acs.walk(state)];
-    //this.elements[1].elements.forEach(function(el) {
-    //  console.log(el.value_acs.value);  
-    //  ret.push(el.value_acs.walk(state));
-    //});
+    seen[this.value_acs.textValue] = true;
+
+    this.elements[1].elements.forEach(function(el) {
+      if(el.value_acs.accessor) return;
+
+      if(el.value_acs.value.ident && !seen[el.value_acs.value.ident.textValue]) {
+        ret.push(el.value_acs.value.ident.walk(state));
+        seen[el.value_acs.value.ident.textValue] = true;
+      }
+    });
     return ret;
   }
 });

@@ -28,3 +28,8 @@ Feature: Functional Support
     Then applying `[3]` will yield `undefined`
     Then applying `[1]` will yield `undefined`
     Then applying `[2]` will yield `5`
+
+  Scenario: I want to use a guard on two variables
+    Given `| x < y | { x + y }`
+    Then applying `[1, 2]` will yield `3`
+    Then applying `[2, 1]` will yield `undefined`
