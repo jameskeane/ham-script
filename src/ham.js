@@ -10,16 +10,24 @@ var lang = require('./lang'),
 lang.Parser.HamFile = new ASTNode.extend({
   serialize: function(state) {
     this.source.add([
-      '(', runtime.patch.toString(), ')(); (function() {']);
+      '(', runtime.patch.toString(), ')();']);
+
+    if(!state.options.bare)
+      this.source.add(' (function() {');
 
     if(this.expr) {
-      this.source.add(['return ', this.expr.walk(state), ';']);
+      if(!state.options.bare)
+        this.source.add(['return ', this.expr.walk(state), ';']);
+      else
+        this.source.add(this.expr.walk(state));
     } else {
       this.elements.forEach(function(el) {
         this.source.add(el.statement.walk(state));
       }.bind(this));
     }
-    this.source.add('})();');
+
+    if(!state.options.bare)
+      this.source.add('})();');
   }
 });
 
@@ -325,10 +333,11 @@ lang.Parser.SpecialNode = ASTNode.extend({
   }
 });
 
-module.exports.compile = function(source, filename) {
+module.exports.compile = function(source, filename, options) {
+  options = options || {};
   var ast = lang.parse(source);
 
-  var sourceGenerator = ast.walk({filename: filename, source: source});
+  var sourceGenerator = ast.walk({filename: filename, source: source, options: options});
   var sm = sourceGenerator.toStringWithSourceMap({file: filename});
   
   return sm;
