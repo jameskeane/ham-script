@@ -10,6 +10,11 @@ currently working towards self-hosting Ham but it is not quite there yet.
 Ham is written in an MVC style manner, where model is the AST, view is the javascript translations 
 (using ejs templates), and the controller is the tree translators.  This makes Ham extremely easy to hack on, and fun!
 
+Usage
+-----
+`npm install -g ham`
+Then write some Ham.js code, and `ham <filename>` to run it.
+
 Syntax
 ------
 Since Ham is extremely similar to Javascript, you can get almost perfect syntax hilighting for free by using the Javascript
@@ -141,9 +146,3 @@ Now that we have function guards we can do some pretty crazy stuff, like make do
 ```Javascript
 while | x < 3 | { x++ }
 ```
-
-
-Usage
------
-`npm install -g ham`
-Then write some Ham.js code, and `ham <filename>` to run it.
